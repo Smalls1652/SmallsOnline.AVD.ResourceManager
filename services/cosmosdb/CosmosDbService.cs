@@ -1,0 +1,33 @@
+using System.Text.Encodings.Web;
+using Microsoft.Azure.Cosmos;
+
+using SmallsOnline.AVD.ResourceManager.Helpers;
+using SmallsOnline.AVD.ResourceManager.Models.Json;
+
+namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
+
+public partial class CosmosDbService : ICosmosDbService
+{
+    public CosmosDbService()
+    {
+        cosmosDbClient = new(
+            connectionString: AppSettings.GetSetting("CosmosDbConnectionString"),
+            clientOptions: new()
+            {
+                Serializer = jsonSerializer
+            }
+        );
+    }
+
+    private CosmosClient cosmosDbClient;
+    private readonly CosmosDbSerializer jsonSerializer = new(
+        new()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Encoder = JavaScriptEncoder.Default,
+            Converters = {
+                new DateTimeOffsetConverter()
+            }
+        }
+    );
+}
