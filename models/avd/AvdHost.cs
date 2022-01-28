@@ -18,17 +18,11 @@ public class AvdHost : IAvdHost
 
         if (previousHostData is not null)
         {
-            HostStatus = new(
-                avdSessionHost: avdSessionHostData,
-                previousHostData: previousHostData
-            );
+            NoSessionsCount = previousHostData.NoSessionsCount;
         }
         else
         {
-            HostStatus = new(
-                avdSessionHost: avdSessionHostData,
-                previousHostData: null
-            );
+            NoSessionsCount = 0;
         }
     }
 
@@ -47,6 +41,21 @@ public class AvdHost : IAvdHost
     [JsonPropertyName("vmResourceId")]
     public string? VmResourceId { get; set; }
 
-    [JsonPropertyName("hostStatus")]
-    public AvdHostStatus? HostStatus { get; set; }
+    [JsonPropertyName("noSessionsCount")]
+    public int? NoSessionsCount { get; set; }
+
+    public void IncrementNoSessionsCount()
+    {
+        NoSessionsCount++;
+    }
+
+    public void ResetNoSessionsCount()
+    {
+        NoSessionsCount = 0;
+    }
+
+    public bool ShouldShutdown(int threshold)
+    {
+        return NoSessionsCount >= threshold;
+    }
 }

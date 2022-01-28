@@ -7,5 +7,9 @@ public interface IAvdHost
     string? HostPoolResourceId { get; set; }
     string? HostPoolName { get; set; }
     string? VmResourceId { get; set; }
-    AvdHostStatus? HostStatus { get; set; }
+    int? NoSessionsCount { get; set; }
+
+    void IncrementNoSessionsCount();
+    void ResetNoSessionsCount();
+    bool ShouldShutdown(int threshold);
 }
