@@ -66,12 +66,12 @@ public class UpdateAvdHostStatuses_Timer
                         );
                     }
 
-                    if (sessionHostItem.Properties?.Sessions == 0 && sessionHostItem.Properties?.Status == "Available")
+                    if (sessionHostItem.Properties?.Sessions == 0 && sessionHostItem.Properties?.Status == "Available" && sessionHostItem.Properties.AllowNewSession == true)
                     {
                         if (sessionHostItem.Properties?.ResourceId is not null)
                         {
-                            avdHostData.HostStatus?.IncrementNoSessionsCount();
-                            bool? shouldShutdown = avdHostData.HostStatus?.ShouldShutdown(
+                            avdHostData.IncrementNoSessionsCount();
+                            bool? shouldShutdown = avdHostData.ShouldShutdown(
                                 threshold: 2
                             );
 
@@ -84,7 +84,7 @@ public class UpdateAvdHostStatuses_Timer
                                     waitForCompletion: false
                                 );
 
-                                avdHostData.HostStatus?.ResetNoSessionsCount();
+                                avdHostData.ResetNoSessionsCount();
                             }
 
                         }
@@ -92,7 +92,7 @@ public class UpdateAvdHostStatuses_Timer
                     else
                     {
                         _logger.LogInformation("{Name} - Session host either offline or has an active session.", sessionHostItem.Name);
-                        avdHostData.HostStatus?.ResetNoSessionsCount();
+                        avdHostData.ResetNoSessionsCount();
                     }
 
                     _cosmosDbService.UpdateAvdHost(avdHostData);
