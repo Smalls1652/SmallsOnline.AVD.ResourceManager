@@ -16,6 +16,9 @@ public class SessionHostProperties : ISessionHostProperties
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 
+    [JsonPropertyName("allowNewSession")]
+    public bool AllowNewSession { get; set; }
+
     [JsonPropertyName("assignedUser")]
     public string? AssignedUser { get; set; }
 }
