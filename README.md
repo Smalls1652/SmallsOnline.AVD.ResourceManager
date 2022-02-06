@@ -1,5 +1,9 @@
 # Azure Virtual Desktop Resource Manager
 
+**Current build status**
+
+[![Build](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/actions/workflows/build.yml)
+
 Shutdown/deallocate Azure Virtual Desktop session hosts, when they're no longer being actively, used to save money on Azure costs.
 
 ## 🤔 The motive
