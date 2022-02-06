@@ -9,6 +9,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>SmallsOnline.AVD.ResourceManager</PackageId>
+    <Authors>Timothy Small</Authors>
+    <Company>Smalls.Online</Company>
+    <RepositoryUrl>https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager</RepositoryUrl>
+    <VersionPrefix>2022.01.00</VersionPrefix>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Azure.Core" Version="1.22.0" />
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
