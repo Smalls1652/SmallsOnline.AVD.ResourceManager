@@ -6,6 +6,9 @@ using SmallsOnline.AVD.ResourceManager.Models.Json;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
+/// <summary>
+/// An Azure CosmosDB client service. 
+/// </summary>
 public partial class CosmosDbService : ICosmosDbService
 {
     public CosmosDbService()

@@ -7,6 +7,10 @@ namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
 public partial class CosmosDbService : ICosmosDbService
 {
+    /// <summary>
+    /// Update an Azure Virtual Desktop session host in the database.
+    /// </summary>
+    /// <param name="hostItem">The updated data of the item.</param>
     public void UpdateAvdHost(AvdHost hostItem)
     {
         Task getFromDbTask = Task.Run(async () => await UpdateAvdHostAsync(hostItem));
@@ -14,6 +18,13 @@ public partial class CosmosDbService : ICosmosDbService
         getFromDbTask.Wait();
     }
 
+    /// <summary>
+    /// Update an Azure Virtual Desktop session host in the database.
+    /// </summary>
+    /// <remarks>
+    /// This method is for running the request asynchronously from the <see cref="UpdateAvdHost()" /> method.
+    /// </remarks>
+    /// <param name="hostItem">The updated data of the item.</param>
     private async Task UpdateAvdHostAsync(AvdHost hostItem)
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");

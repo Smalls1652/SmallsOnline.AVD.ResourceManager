@@ -7,6 +7,11 @@ namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
 public partial class AzureApiService : IAzureApiService
 {
+    /// <summary>
+    /// Get the <see cref="SessionHost">SessionHosts</see> in an Azure Virtual Desktop hostpool.
+    /// </summary>
+    /// <param name="hostPool">The hostpool of the session hosts.</param>
+    /// <returns>An array of all sessions hosts currently in the hostpool.</returns>
     public List<SessionHost>? GetSessionHosts(AvdHostPool hostPool)
     {
         Task<List<SessionHost>?> apiCallTask = Task.Run(async () => await GetSessionHostsAsync(hostPool));
@@ -14,6 +19,14 @@ public partial class AzureApiService : IAzureApiService
         return apiCallTask.Result;
     }
 
+    /// <summary>
+    /// Get the <see cref="SessionHost">SessionHosts</see> in an Azure Virtual Desktop hostpool.
+    /// </summary>
+    /// <remarks>
+    /// This method is for running the request asynchronously from the <see cref="GetSessionHosts()" /> method.
+    /// </remarks>
+    /// <param name="hostPool">The hostpool of the session hosts.</param>
+    /// <returns>An array of all sessions hosts currently in the hostpool.</returns>
     private async Task<List<SessionHost>?> GetSessionHostsAsync(AvdHostPool hostPool)
     {
         HttpRequestMessage requestMessage = new(

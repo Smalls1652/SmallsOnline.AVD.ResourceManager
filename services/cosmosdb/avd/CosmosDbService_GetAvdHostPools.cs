@@ -6,7 +6,10 @@ namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
 public partial class CosmosDbService : ICosmosDbService
 {
-
+    /// <summary>
+    /// Get all of the registered Azure Virtual Desktop hostpools in the database.
+    /// </summary>
+    /// <returns>An array/collection of <see cref="AvdHostPool" /> objects.</returns>
     public List<AvdHostPool> GetAvdHostPools()
     {
         Task<List<AvdHostPool>> getAvdHostPoolsTask = Task.Run(async () => await GetAvdHostPoolsAsync());
@@ -31,6 +34,13 @@ public partial class CosmosDbService : ICosmosDbService
         return hostPoolItems;
     }
 
+    /// <summary>
+    /// Get all of the registered Azure Virtual Desktop hostpools in the database.
+    /// </summary>
+    /// <remarks>
+    /// This method is for running the request asynchronously from the <see cref="GetAvdHostPools()" /> method.
+    /// </remarks>
+    /// <returns>An array/collection of <see cref="AvdHostPool" /> objects.</returns>
     private async Task<List<AvdHostPool>> GetAvdHostPoolsAsync()
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");

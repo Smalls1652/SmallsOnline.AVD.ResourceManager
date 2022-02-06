@@ -1,7 +1,13 @@
 namespace SmallsOnline.AVD.ResourceManager.Models.Json;
 
+/// <summary>
+/// A custom <see cref="System.Text.Json" /> converter for the <see cref="DateTimeOffset" /> type.
+/// </summary>
 public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 {
+    /// <summary>
+    /// A custom defintion of the Eastern Standard Time timezone to account for systems that don't have timezones.
+    /// </summary>
     private readonly TimeZoneInfo _dateTimeTimeZoneInfo = TimeZoneInfo.CreateCustomTimeZone(
             id: "Eastern Standard Time",
             baseUtcOffset: new(-5, 0, 0),
@@ -48,7 +54,7 @@ public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
                 )
             }
         );
-
+        
     public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         DateTime inputTime = DateTime.Parse($"{reader.GetString()} 17:00");

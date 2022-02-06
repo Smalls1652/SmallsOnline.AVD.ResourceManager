@@ -3,6 +3,9 @@ using Microsoft.Azure.Cosmos;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
+/// <summary>
+/// A custom serializer to serialize and deserialize data for the CosmosDB service.
+/// </summary>
 public class CosmosDbSerializer : CosmosSerializer
 {
     private readonly JsonObjectSerializer systemTextJsonSerializer;
