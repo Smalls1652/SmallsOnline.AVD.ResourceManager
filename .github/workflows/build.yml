@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+name: Build
+on:
+  - push
+  - pull_request
+jobs:
+  build-function:
+    name: Build Azure Functions library
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        configuration: [ 'Release' ]
+    env:
+      DOTNET_NOLOGO: true
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup dotnet SDK
+        uses: actions/setup-dotnet@v1
+        with:
+         dotnet-version: '6.0.x'
+
+      - name: Run 'dotnet restore'
+        run: dotnet restore
+
+      - name: Run MSBuild
+        run: dotnet build --configuration "${{ matrix.configuration }}"
