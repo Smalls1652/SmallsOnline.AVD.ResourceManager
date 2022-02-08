@@ -14,7 +14,16 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      EVENT_TYPE: ${{ github.event_name }}
+      TAG_NAME: ${{ github.ref_name }}
+
     steps:
+      - name: Generate artifact tag value
+        shell: pwsh
+        run: |
+          "ARTIFACT_TAG=$($env:EVENT_TYPE -eq "push" ? $env:TAG_NAME : $([datetime]::Now.ToString("yyyyMMddTHHmmss")))" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: "Checkout GitHub Action"
         uses: actions/checkout@v2
 
@@ -29,5 +38,5 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: SmallsOnline-AVD-ResourceManager
+          name: "SmallsOnline-AVD-ResourceManager_${{ env.ARTIFACT_TAG }}"
           path: ./output/*
