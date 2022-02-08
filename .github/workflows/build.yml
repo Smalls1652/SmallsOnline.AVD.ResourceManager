@@ -1,8 +1,16 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 name: Build
 on:
-  - push
-  - pull_request
+  push:
+    paths-ignore:
+      - ".github/workflows/create-zip-artifact.yml"
+      - ".github/dependabot.yml"
+      - ".vscode/*"
+      - "azure/*"
+      - "host.json"
+      - "**.md"
+  pull_request:  
+
 jobs:
   build-function:
     name: Build Azure Functions library
