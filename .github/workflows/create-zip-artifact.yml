@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+name: Create ZIP artifact
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  create-zip-artifact:
+    name: Create ZIP artifact
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Build project
+        run: |
+          dotnet build --configuration Release --output ./output/
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: SmallsOnline-AVD-ResourceManager
+          path: ./output/*
