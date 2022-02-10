@@ -26,7 +26,7 @@ It creates the following resources in your Azure subscription:
 
 @minLength(1)
 @description('The location the resources should live at.')
-param location string = 'eastus2'
+param location string = resourceGroup().location
 
 @minLength(1)
 @description('The name of what you want the Azure CosmosDB account to be called.')

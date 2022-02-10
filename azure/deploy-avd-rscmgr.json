@@ -5,13 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1124.51302",
-      "templateHash": "17050540054923057997"
+      "templateHash": "2676831444958144005"
     }
   },
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "eastus2",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "The location the resources should live at."
       },
