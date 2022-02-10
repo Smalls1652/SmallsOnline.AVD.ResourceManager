@@ -1,0 +1,249 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1124.51302",
+      "templateHash": "4001078931684287972"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location the resources should live at."
+      },
+      "minLength": 1
+    },
+    "databaseName": {
+      "type": "string",
+      "defaultValue": "avd-rscmgr-db",
+      "metadata": {
+        "description": "The name of what you want the Azure CosmosDB account to be called."
+      },
+      "minLength": 1
+    },
+    "functionAppName": {
+      "type": "string",
+      "defaultValue": "avd-rscmgr-func",
+      "metadata": {
+        "description": "The name of what you want the Azure Functions app to be called."
+      },
+      "minLength": 1
+    },
+    "randomHash": {
+      "type": "string",
+      "defaultValue": "[utcNow()]",
+      "minLength": 6
+    }
+  },
+  "variables": {
+    "uniqueNameString": "[uniqueString(subscription().id, parameters('randomHash'))]",
+    "managedIdentityName": "[format('{0}-identity-{1}', parameters('functionAppName'), variables('uniqueNameString'))]",
+    "functionAppSvcPlanName": "[format('avd-rscmgr-ASP-{0}', take(variables('uniqueNameString'), 6))]",
+    "storageAcctName": "[format('{0}stg', take(variables('uniqueNameString'), 12))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2021-10-15",
+      "name": "[format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString'))]",
+      "location": "[parameters('location')]",
+      "kind": "GlobalDocumentDB",
+      "identity": {
+        "type": "None"
+      },
+      "properties": {
+        "databaseAccountOfferType": "Standard",
+        "locations": [
+          {
+            "locationName": "[parameters('location')]",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "EnableServerless"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "apiVersion": "2021-10-15",
+      "name": "[format('{0}/{1}', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "resource": {
+          "id": "avd-resource-manager"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2021-10-15",
+      "name": "[format('{0}/{1}/{2}', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager', 'monitored-hosts')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "resource": {
+          "id": "monitored-hosts",
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "automatic": true,
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/\"_etag\"/?"
+              }
+            ]
+          },
+          "partitionKey": {
+            "kind": "Hash",
+            "paths": [
+              "/partitionKey"
+            ]
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-06-01",
+      "name": "[variables('storageAcctName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "Storage",
+      "properties": {
+        "minimumTlsVersion": "TLS1_2",
+        "supportsHttpsTrafficOnly": true
+      }
+    },
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2018-11-30",
+      "name": "[variables('managedIdentityName')]",
+      "location": "[parameters('location')]"
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('functionAppSvcPlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y",
+        "capacity": 0
+      },
+      "kind": "functionapp",
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}-{1}', parameters('functionAppName'), variables('uniqueNameString'))]",
+      "location": "[parameters('location')]",
+      "kind": "functionapp,linux",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName')))]": {}
+        }
+      },
+      "properties": {
+        "enabled": true,
+        "reserved": true,
+        "siteConfig": {
+          "linuxFxVersion": "DOTNET|6.0",
+          "use32BitWorkerProcess": true,
+          "numberOfWorkers": 1,
+          "cors": {
+            "allowedOrigins": [
+              "https://portal.azure.com"
+            ]
+          },
+          "appSettings": [
+            {
+              "name": "AzureSubscriptionId",
+              "value": "[subscription().subscriptionId]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[format('DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1};EndpointSuffix={2}', variables('storageAcctName'), listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcctName')), '2021-06-01').keys[0].value, environment().suffixes.storage)]"
+            },
+            {
+              "name": "CosmosDbConnectionString",
+              "value": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;AccountKey={1};', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString'))), '2021-10-15').primaryMasterKey)]"
+            },
+            {
+              "name": "CosmosDbDatabaseName",
+              "value": "avd-resource-manager"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~4"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet-isolated"
+            },
+            {
+              "name": "ManagedIdentityClientId",
+              "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))).clientId]"
+            }
+          ]
+        },
+        "clientAffinityEnabled": false,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionAppSvcPlanName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('functionAppSvcPlanName'))]",
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAcctName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "functionAppSvcPlanResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Web/serverfarms', variables('functionAppSvcPlanName'))]"
+    },
+    "functionAppResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Web/sites', format('{0}-{1}', parameters('functionAppName'), variables('uniqueNameString')))]"
+    },
+    "functionAppStorageAccountResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAcctName'))]"
+    },
+    "cosmosDbResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')))]"
+    },
+    "managedIdentityResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]"
+    }
+  }
+}
