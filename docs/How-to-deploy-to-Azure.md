@@ -17,11 +17,7 @@ In order to utilize Azure Virtual Desktop Resource Manager, you'll need to have 
 
 ### Using the pre-made template
 
-> ⚠️ **Note:** This method utilizes the `WEBSITE_RUN_FROM_PACKAGE` configuration and uses the latest publicly available ZIP file from this repo ([Found here in the latest release](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/latest)).
-
 The simplest solution will be to utilize [the Azure ARM template that's included in this repository here](../azure/deploy-avd-rscmgr.json) ([Bicep version](../azure/deploy-avd-rscmgr.bicep)). You can click the button below to deploy the template directly from the Azure Portal.
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fadd-deploy-to-azure-docs%2Fazure%2Fdeploy-avd-rscmgr.json)
 
 You will need to do the following:
 
@@ -33,3 +29,16 @@ You will need to do the following:
 Here's an example:
 
 ![Example of template parameters in the Azure portal.](../.github/repo-imgs/deploy-to-azure_template/deployment-parameters.png)
+
+#### With a pre-built ZIP package
+
+> ⚠️ **Note:** Please be aware that this method utilizes the `WEBSITE_RUN_FROM_PACKAGE` configuration and uses the latest publicly available ZIP file from this repo ([Found here in the latest release](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/latest)), which means you'll be deploying the Functions app I've built using CI/CD in GitHub.
+
+[![Deploy to Azure with pre-built package](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fadd-deploy-to-azure-docs%2Fazure%2Fdeploy-avd-rscmgr.json)
+
+#### Just the Azure resources
+
+> ⚠️ **Note:** This requires you to manually deploy the compiled code to the Function app.
+
+[![Deploy to Azure without the package](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fadd-deploy-to-azure-docs%2Fazure%2Fdeploy-avd-rscmgr_no-package.json)
+
