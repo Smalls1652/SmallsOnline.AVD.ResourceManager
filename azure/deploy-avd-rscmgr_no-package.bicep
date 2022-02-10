@@ -219,10 +219,6 @@ resource functionAppResource 'Microsoft.Web/sites@2021-02-01' = {
           name: 'ManagedIdentityClientId'
           value: managedIdentityResource.properties.clientId
         }
-        {
-          name: 'WEBSITE_RUN_FROM_PACKAGE'
-          value: 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.01/SmallsOnline-AVD-ResourceManager_v2022.01.01.zip'
-        }
       ]
     }
 
