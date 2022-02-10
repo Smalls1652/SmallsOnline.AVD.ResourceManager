@@ -29,7 +29,7 @@ On the backend, it's using these following Azure services:
 
 ## 🏗️ Setting up
 
-For info on how to deploy this into your own repo, [check out the docs](./docs/README.md)!
+For info on how to deploy this into your own Azure subscription, [check out the docs](./docs/README.md)!
 
 ## 🧑‍💻 Building from source
 
