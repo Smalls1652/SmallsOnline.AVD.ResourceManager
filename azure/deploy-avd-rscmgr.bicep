@@ -3,7 +3,7 @@ Name: Deploy resources for Azure Virtual Desktop Resource Manager
 Author: Tim Small
 Website: https://smalls.online
 GitHub Repo: https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager
-Version: 2022.01.00
+Version: 2022.01.01
 
 Description:
 
@@ -26,24 +26,29 @@ It creates the following resources in your Azure subscription:
 
 @minLength(1)
 @description('The location the resources should live at.')
-param location string = resourceGroup().location
+param location string = 'eastus2'
 
 @minLength(1)
 @description('The name of what you want the Azure CosmosDB account to be called.')
-param databaseName string
+param databaseName string = 'avd-rscmgr-db'
 
 @minLength(1)
 @description('The name of what you want the Azure Functions app to be called.')
-param functionAppName string
+param functionAppName string = 'avd-rscmgr-func'
 
-var managedIdentityName = '${functionAppName}-identity'
-var functionAppSvcPlanName = '${replace(resourceGroup().name, '-', '')}-ASP-${take(uniqueString(resourceGroup().id), 4)}'
-var storageAcctName = '${take(uniqueString(resourceGroup().id), 6)}${take(replace(resourceGroup().name, '-', ''),6)}stg'
+@minLength(6)
+param randomHash string = utcNow()
+
+var uniqueNameString = uniqueString(subscription().id, randomHash)
+
+var managedIdentityName = '${functionAppName}-identity-${uniqueNameString}'
+var functionAppSvcPlanName = 'avd-rscmgr-ASP-${take(uniqueNameString, 6)}'
+var storageAcctName = '${take(uniqueNameString, 12)}stg'
 
 // Create the Azure CosmosDB account.
 resource cosmosDbResource 'Microsoft.DocumentDB/databaseAccounts@2021-10-15' = {
   location: location
-  name: databaseName
+  name: '${databaseName}-${uniqueNameString}'
 
   kind: 'GlobalDocumentDB'
   identity: {
@@ -92,7 +97,7 @@ resource cosmosDbDatabaseContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDat
       indexingPolicy: {
         indexingMode: 'consistent'
         automatic: true
-        
+
         includedPaths: [
           {
             path: '/*'
@@ -128,86 +133,7 @@ resource storageAcctResource 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   kind: 'Storage'
   properties: {
     minimumTlsVersion: 'TLS1_2'
-    allowBlobPublicAccess: true
     supportsHttpsTrafficOnly: true
-
-    encryption: {
-      keySource: 'Microsoft.Storage'
-      services: {
-        blob: {
-          enabled: true
-          keyType: 'Account'
-        }
-
-        file: {
-          enabled: true
-          keyType: 'Account'
-        }
-      }
-    }
-  }
-}
-
-// Create the blob services in the storage account.
-resource storageAcctBlobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
-  parent: storageAcctResource
-  name: 'default'
-  properties: {
-    deleteRetentionPolicy: {
-      enabled: false
-    }
-  }
-}
-
-// Create a blob container named 'azure-webjobs-hosts' in the storage account.
-// Disable public access to the container and blobs in it.
-resource storageAcctBlobWebJobsHostsContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-06-01' = {
-  parent: storageAcctBlobServices
-  name: 'azure-webjobs-hosts'
-  properties: {
-    publicAccess: 'None'
-    immutableStorageWithVersioning: {
-      enabled: false
-    }
-  }
-}
-
-// Create a blob container named 'azure-webjobs-secrets' in the storage account.
-// Disable public access to the container and blobs in it.
-resource storageAcctBlobWebJobsSecretsContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-06-01' = {
-  parent: storageAcctBlobServices
-  name: 'azure-webjobs-secrets'
-  properties: {
-    publicAccess: 'None'
-    immutableStorageWithVersioning: {
-      enabled: false
-    }
-  }
-}
-
-// Create a blob container named 'function-releases' in the storage account.
-// Disable public access to the container and blobs in it.
-resource storageAcctBlobFunctionReleasesContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-06-01' = {
-  parent: storageAcctBlobServices
-  name: 'function-releases'
-  properties: {
-    publicAccess: 'None'
-    immutableStorageWithVersioning: {
-      enabled: false
-    }
-  }
-}
-
-// Create a blob container named 'scm-releases' in the storage account.
-// Disable public access to the container and blobs in it.
-resource storageAcctBlobScmReleasesContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-06-01' = {
-  parent: storageAcctBlobServices
-  name: 'scm-releases'
-  properties: {
-    publicAccess: 'None'
-    immutableStorageWithVersioning: {
-      enabled: false
-    }
   }
 }
 
@@ -230,24 +156,16 @@ resource functionAppServicePlanResource 'Microsoft.Web/serverfarms@2021-02-01' =
     family: 'Y'
     capacity: 0
   }
+  
   kind: 'functionapp'
   properties: {
-    perSiteScaling: false
-    elasticScaleEnabled: false
-    maximumElasticWorkerCount: 1
-    isSpot: false
     reserved: true
-    isXenon: false
-    hyperV: false
-    targetWorkerCount: 0
-    targetWorkerSizeId: 0
-    zoneRedundant: false
   }
 }
 
 // Create the Functions app.
 resource functionAppResource 'Microsoft.Web/sites@2021-02-01' = {
-  name: functionAppName
+  name: '${functionAppName}-${uniqueNameString}'
   location: location
 
   kind: 'functionapp,linux'
@@ -259,58 +177,58 @@ resource functionAppResource 'Microsoft.Web/sites@2021-02-01' = {
   }
   properties: {
     enabled: true
+    reserved: true
 
     siteConfig: {
-      numberOfWorkers: 1
       linuxFxVersion: 'DOTNET|6.0'
-      functionAppScaleLimit: 200
-      minimumElasticInstanceCount: 1
+      use32BitWorkerProcess: true
+      numberOfWorkers: 1
+
+      cors: {
+        allowedOrigins: [
+          'https://portal.azure.com'
+        ]
+      }
+
+      appSettings: [
+        {
+          name: 'AzureSubscriptionId'
+          value: subscription().subscriptionId
+        }
+        {
+          name: 'AzureWebJobsStorage' 
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAcctResource.name};AccountKey=${storageAcctResource.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+        }
+        {
+          name: 'CosmosDbConnectionString'
+          value: 'AccountEndpoint=https://${cosmosDbResource.name}.documents.azure.com:443/;AccountKey=${cosmosDbResource.listKeys().primaryMasterKey};'
+        }
+        {
+          name: 'CosmosDbDatabaseName'
+          value: cosmosDbDatabase.name
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'dotnet-isolated'
+        }
+        {
+          name: 'ManagedIdentityClientId'
+          value: managedIdentityResource.properties.clientId
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.01/SmallsOnline-AVD-ResourceManager_v2022.01.01.zip'
+        }
+      ]
     }
 
-    redundancyMode: 'None'
+    clientAffinityEnabled: false
 
     serverFarmId: functionAppServicePlanResource.id
-  }
-}
-
-// Set the Functions app web config.
-resource functionAppConfigWeb 'Microsoft.Web/sites/config@2021-02-01' = {
-  parent: functionAppResource
-  name: 'web'
-
-  properties: {
-    numberOfWorkers: 1
-    netFrameworkVersion: 'v4.0'
-    linuxFxVersion: 'DOTNET|6.0'
-    alwaysOn: false
-    functionAppScaleLimit: 200
-    functionsRuntimeScaleMonitoringEnabled: false
-    minimumElasticInstanceCount: 1
-  }
-}
-
-// Set the default Functions app AppSettings.
-resource functionAppConfigAppSettings 'Microsoft.Web/sites/config@2021-02-01' = {
-  parent: functionAppResource
-  name: 'appsettings'
-  
-  properties: {
-    AzureSubscriptionId: subscription().subscriptionId
-    AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAcctResource.name};AccountKey=${storageAcctResource.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
-    CosmosDbConnectionString: 'AccountEndpoint=https://${cosmosDbResource.name}.documents.azure.com:443/;AccountKey=${cosmosDbResource.listKeys().primaryMasterKey};'
-    CosmosDbDatabaseName: cosmosDbDatabase.name
-    FUNCTIONS_EXTENSION_VERSION: '~4'
-    FUNCTIONS_WORKER_RUNTIME: 'dotnet-isolated'
-    ManagedIdentityClientId: managedIdentityResource.properties.clientId
-  }
-}
-
-// Set the Functions app hostname binding.
-resource functionAppHostNameBinding 'Microsoft.Web/sites/hostNameBindings@2021-02-01' = {
-  parent: functionAppResource
-  name: '${functionAppName}.azurewebsites.net'
-  properties: {
-    siteName: functionAppName
   }
 }
 
