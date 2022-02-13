@@ -18,7 +18,6 @@ public class AvdHost : IAvdHost
         Id = avdSessionHostData.Properties?.ObjectId;
         PartitionKey = "avd-host-items";
         HostPoolResourceId = avdHostPool.HostPoolResourceId;
-        HostPoolName = avdHostPool.HostPoolName;
         VmResourceId = virtualMachineData.Id;
 
         if (previousHostData is not null)
@@ -48,12 +47,6 @@ public class AvdHost : IAvdHost
     /// </summary>
     [JsonPropertyName("hostPoolResourceId")]
     public string? HostPoolResourceId { get; set; }
-
-    /// <summary>
-    /// The name of the Azure Virtual Desktop hostpool.
-    /// </summary>
-    [JsonPropertyName("hostPoolName")]
-    public string? HostPoolName { get; set; }
 
     /// <summary>
     /// The resource ID for the virtual machine.
