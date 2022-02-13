@@ -67,4 +67,6 @@ For guidance on deploying the compiled code to the Functions app, you'll want to
 - [Visual Studio - Publish to Azure](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs?tabs=in-process#publish-to-azure)
 - [Through GitHub Actions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions?tabs=dotnet)
   - ⚠️ **Heads up!**
-    - You'll need to **fork** or **copy** this repo (You can use the _**Use this template**_ button) to do this. For either option, you'll need to add this repo as an upstream in your local `git` copy to keep it up-to-date with any updates.
+    - You'll need to **fork** this repo to do this.
+    - For a guide on how to fork a repository on GitHub, [check out their documentation here](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
+    - For a guide on how to keep the fork up-to-date with this repo, [check out their documentation here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).
