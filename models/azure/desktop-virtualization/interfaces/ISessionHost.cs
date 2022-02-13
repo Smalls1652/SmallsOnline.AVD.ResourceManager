@@ -4,5 +4,5 @@ public interface ISessionHost
 {
     string? Name { get; set; }
     string? ResourceId { get; set; }
-    SessionHostProperties? Properties { get; set; }
+    SessionHostProperties Properties { get; set; }
 }

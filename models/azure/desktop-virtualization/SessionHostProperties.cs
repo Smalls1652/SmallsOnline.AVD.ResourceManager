@@ -13,13 +13,13 @@ public class SessionHostProperties : ISessionHostProperties
     /// The unique object ID of the Azure Virtual Desktop session host.
     /// </summary>
     [JsonPropertyName("objectId")]
-    public string? ObjectId { get; set; }
+    public string ObjectId { get; set; } = default!;
 
     /// <summary>
     /// The resource ID of the session host.
     /// </summary>
     [JsonPropertyName("resourceId")]
-    public string? ResourceId { get; set; }
+    public string ResourceId { get; set; } = default!;
 
     /// <summary>
     /// The count of sessions currently active on the session host.

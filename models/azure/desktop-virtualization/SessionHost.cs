@@ -22,5 +22,5 @@ public class SessionHost : ISessionHost
     public string? ResourceId { get; set; }
 
     [JsonPropertyName("properties")]
-    public SessionHostProperties? Properties { get; set; }
+    public SessionHostProperties Properties { get; set; } = default!;
 }

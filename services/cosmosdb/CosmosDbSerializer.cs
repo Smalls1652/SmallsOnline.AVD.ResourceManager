@@ -8,11 +8,11 @@ namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 /// </summary>
 public class CosmosDbSerializer : CosmosSerializer
 {
-    private readonly JsonObjectSerializer systemTextJsonSerializer;
+    private readonly JsonObjectSerializer jsonSerializer;
 
     public CosmosDbSerializer(JsonSerializerOptions jsonSerializerOptions)
     {
-        systemTextJsonSerializer = new JsonObjectSerializer(jsonSerializerOptions);
+        jsonSerializer = new(jsonSerializerOptions);
     }
 
     public override T FromStream<T>(Stream stream)
@@ -22,7 +22,7 @@ public class CosmosDbSerializer : CosmosSerializer
             if (stream.CanSeek
                    && stream.Length == 0)
             {
-                return default;
+                return default!;
             }
 
             if (typeof(Stream).IsAssignableFrom(typeof(T)))
@@ -30,15 +30,26 @@ public class CosmosDbSerializer : CosmosSerializer
                 return (T)(object)stream;
             }
 
-            return (T)systemTextJsonSerializer.Deserialize(stream, typeof(T), default);
+            return (T)jsonSerializer.Deserialize(
+                stream: stream,
+                returnType: typeof(T),
+                cancellationToken: default
+            )!;
         }
     }
 
     public override Stream ToStream<T>(T input)
     {
-        MemoryStream streamPayload = new MemoryStream();
-        this.systemTextJsonSerializer.Serialize(streamPayload, input, typeof(T), default);
+        MemoryStream streamPayload = new();
+
+        jsonSerializer.Serialize(
+            stream: streamPayload,
+            value: input,
+            inputType: typeof(T), 
+            cancellationToken: default
+        );
         streamPayload.Position = 0;
+
         return streamPayload;
     }
 }
