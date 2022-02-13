@@ -50,77 +50,87 @@ public class UpdateAvdHostStatuses_Timer
                 // Loop through each session host in the hostpool.
                 foreach (SessionHost sessionHostItem in sessionHosts)
                 {
-                    _logger.LogInformation("{Name} - Sessions Active: {Sessions}", sessionHostItem.Name, sessionHostItem.Properties?.Sessions);
-
-                    // Get details about the virtual machine.
-                    VirtualMachine virtualMachine = _azureApiService.GetAzVM(sessionHostItem.Properties?.ResourceId);
-                    VirtualMachineData virtualMachineData = virtualMachine.Get(
-                        expand: InstanceViewTypes.InstanceView
-                    )
-                        .Value
-                        .Data;
-
-                    // Get data about the session host in the database.
-                    AvdHost? avdHostData;
-                    avdHostData = _cosmosDbService.GetAvdHost(sessionHostItem.Properties?.ObjectId);
-
-                    // If no data was returned from the database, then initialize an object for the session host.
-                    if (avdHostData is null)
+                    // Need to add a better way to handle the 'Properties' property returning as null.
+                    if (sessionHostItem.Properties is null)
                     {
-                        _logger.LogWarning("{Name} - An item for this session host doesn't exist in the DB. Creating one.", sessionHostItem.Name);
-                        avdHostData = new(
-                            virtualMachineData: virtualMachineData,
-                            avdHostPool: hostPoolItem,
-                            avdSessionHostData: sessionHostItem,
-                            previousHostData: null
-                        );
+                        _logger.LogError("{Name} - Session host's 'Properties' was returned as null.", sessionHostItem.Name);
                     }
-
-                    // If the session host has 0 active sessions, is available, and is not in drain mode (AllowNewSession is set to true),
-                    // then start the evaluation process.
-                    if (sessionHostItem.Properties?.Sessions == 0 && sessionHostItem.Properties?.Status == "Available" && sessionHostItem.Properties.AllowNewSession == true)
-                    {
-                        // If the session host's resource ID isn't null, then start the evaluation.
-                        // This checks needs to be expanded on, since there is a slight possibility that the API might return a null value.
-                        if (sessionHostItem.Properties?.ResourceId is not null)
-                        {
-                            // Increment the "NoSessionCount" property on the session host.
-                            // Then evaluate if it needs to be shutdown.
-                            // Currently the threshold is set to 2, so, if a session host has no active session for 40 minutes, it will return true.
-                            // !! Need to add the ability to specify what the threshold should be.
-                            avdHostData.IncrementNoSessionsCount();
-                            bool? shouldShutdown = avdHostData.ShouldShutdown(
-                                threshold: 2
-                            );
-
-                            _logger.LogWarning("{Name} - No active session count incremented.", sessionHostItem.Name);
-
-                            // If the session host was evaluated to shutdown, start the shutdown process.
-                            if (shouldShutdown == true)
-                            {
-                                _logger.LogWarning("{Name} - No active sessions for the last 2 evals. Deallocating session host.", sessionHostItem.Name);
-
-                                // Set the virtual machine for deallocation.
-                                // It's set to not wait for completion, so that the function doesn't hit the max timeout limit.
-                                virtualMachine.Deallocate(
-                                    waitForCompletion: false
-                                );
-
-                                // Reset the "NoSessionCount" to 0, so that the it doesn't cause issues when it's evaluated in the future.
-                                avdHostData.ResetNoSessionsCount();
-                            }
-
-                        }
-                    }
-                    // If the session host is offline, in drain mode, or it has an active session, then reset the "NoSessionCount".
                     else
                     {
-                        _logger.LogInformation("{Name} - Session host either offline or has an active session.", sessionHostItem.Name);
-                        avdHostData.ResetNoSessionsCount();
-                    }
+                        _logger.LogInformation("{Name} - Sessions Active: {Sessions}", sessionHostItem.Name, sessionHostItem.Properties?.Sessions);
 
-                    // Update the entry for the session host in the database.
-                    _cosmosDbService.UpdateAvdHost(avdHostData);
+                        // Get details about the virtual machine.
+                        // Note: The compiler is still returning a that the 'Properties' property is still possibily null, which it's definitely not.
+                        // For the time being, I've added a 'null-forgiving' operator to it.
+                        VirtualMachine virtualMachine = _azureApiService.GetAzVM(sessionHostItem.Properties!.ResourceId);
+                        VirtualMachineData virtualMachineData = virtualMachine.Get(
+                            expand: InstanceViewTypes.InstanceView
+                        )
+                            .Value
+                            .Data;
+
+                        // Get data about the session host in the database.
+                        AvdHost? avdHostData;
+                        avdHostData = _cosmosDbService.GetAvdHost(sessionHostItem.Properties.ObjectId);
+
+                        // If no data was returned from the database, then initialize an object for the session host.
+                        if (avdHostData is null)
+                        {
+                            _logger.LogWarning("{Name} - An item for this session host doesn't exist in the DB. Creating one.", sessionHostItem.Name);
+                            avdHostData = new(
+                                virtualMachineData: virtualMachineData,
+                                avdHostPool: hostPoolItem,
+                                avdSessionHostData: sessionHostItem,
+                                previousHostData: null
+                            );
+                        }
+
+                        // If the session host has 0 active sessions, is available, and is not in drain mode (AllowNewSession is set to true),
+                        // then start the evaluation process.
+                        if (sessionHostItem.Properties?.Sessions == 0 && sessionHostItem.Properties?.Status == "Available" && sessionHostItem.Properties.AllowNewSession == true)
+                        {
+                            // If the session host's resource ID isn't null, then start the evaluation.
+                            // This checks needs to be expanded on, since there is a slight possibility that the API might return a null value.
+                            if (sessionHostItem.Properties?.ResourceId is not null)
+                            {
+                                // Increment the "NoSessionCount" property on the session host.
+                                // Then evaluate if it needs to be shutdown.
+                                // Currently the threshold is set to 2, so, if a session host has no active session for 40 minutes, it will return true.
+                                // !! Need to add the ability to specify what the threshold should be.
+                                avdHostData.IncrementNoSessionsCount();
+                                bool? shouldShutdown = avdHostData.ShouldShutdown(
+                                    threshold: 2
+                                );
+
+                                _logger.LogWarning("{Name} - No active session count incremented.", sessionHostItem.Name);
+
+                                // If the session host was evaluated to shutdown, start the shutdown process.
+                                if (shouldShutdown == true)
+                                {
+                                    _logger.LogWarning("{Name} - No active sessions for the last 2 evals. Deallocating session host.", sessionHostItem.Name);
+
+                                    // Set the virtual machine for deallocation.
+                                    // It's set to not wait for completion, so that the function doesn't hit the max timeout limit.
+                                    virtualMachine.Deallocate(
+                                        waitForCompletion: false
+                                    );
+
+                                    // Reset the "NoSessionCount" to 0, so that the it doesn't cause issues when it's evaluated in the future.
+                                    avdHostData.ResetNoSessionsCount();
+                                }
+
+                            }
+                        }
+                        // If the session host is offline, in drain mode, or it has an active session, then reset the "NoSessionCount".
+                        else
+                        {
+                            _logger.LogInformation("{Name} - Session host either offline or has an active session.", sessionHostItem.Name);
+                            avdHostData.ResetNoSessionsCount();
+                        }
+
+                        // Update the entry for the session host in the database.
+                        _cosmosDbService.UpdateAvdHost(avdHostData);
+                    }
                 }
             }
         }
