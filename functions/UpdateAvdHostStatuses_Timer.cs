@@ -41,7 +41,7 @@ public class UpdateAvdHostStatuses_Timer
         // Loop through each hostpool.
         foreach (AvdHostPool hostPoolItem in retrievedHostPools)
         {
-            _logger.LogInformation("Getting session hosts for hostpool: {HostPoolName}", hostPoolItem.HostPoolName);
+            _logger.LogInformation("Getting session hosts for hostpool: {HostPoolName}", hostPoolItem.HostPoolResourceId);
 
             // Get the session hosts in the hostpool.
             List<SessionHost>? sessionHosts = _azureApiService.GetSessionHosts(hostPoolItem);

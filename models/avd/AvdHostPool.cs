@@ -22,12 +22,6 @@ public class AvdHostPool : IAvdHostPool
     public string? PartitionKey { get; set; }
 
     /// <summary>
-    /// The name of the Azure Virtual Desktop hostpool.
-    /// </summary>
-    [JsonPropertyName("hostPoolName")]
-    public string? HostPoolName { get; set; }
-
-    /// <summary>
     /// The resource ID of the Azure Virtual Desktop hostpool.
     /// </summary>
     [JsonPropertyName("hostPoolResourceId")]
