@@ -30,7 +30,7 @@ I designed the necessary permissions required to be as minimal as possible. This
 
 You can deploy the custom role to your subscription automatically by using the [ARM template](../azure/templates/create-custom-role.json) ([Bicep version](../azure/templates/create-custom-role.bicep)). This will create the role in your subscription with all the necessary permissions.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fmain%2Fazure%2Fcreate-custom-role.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fmain%2Fazure%2Ftemplates%2Fcreate-custom-role.json)
 
 #### Manually
 

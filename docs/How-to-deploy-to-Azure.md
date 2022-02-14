@@ -34,7 +34,7 @@ Here's an example:
 
 > ⚠️ **Note:** Please be aware that this method utilizes the `WEBSITE_RUN_FROM_PACKAGE` configuration and uses the latest publicly available ZIP file from this repo ([Found here in the latest release](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/latest)), which means you'll be deploying the Functions app I've built using CI/CD in GitHub.
 
-[![Deploy to Azure with pre-built package](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fmain%2Fazure%2Fdeploy-avd-rscmgr.json)
+[![Deploy to Azure with pre-built package](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fmain%2Fazure%2Ftemplates%2Fdeploy-avd-rscmgr.json)
 
 Or with PowerShell:
 
@@ -49,7 +49,7 @@ New-AzResourceGroupDeployment -ResourceGroupName $rscGroup.ResourceGroupName -Na
 
 > ⚠️ **Note:** This requires you to manually deploy the compiled code to the Functions app.
 
-[![Deploy to Azure without the package](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fmain%2Fazure%2Fdeploy-avd-rscmgr_no-package.json)
+[![Deploy to Azure without the package](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSmalls1652%2FSmallsOnline.AVD.ResourceManager%2Fmain%2Fazure%2Ftemplates%2Fdeploy-avd-rscmgr_no-package.json)
 
 Or with PowerShell:
 
