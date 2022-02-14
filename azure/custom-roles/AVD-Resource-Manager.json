@@ -1,0 +1,30 @@
+{
+    "properties": {
+        "roleName": "Azure Virtual Desktop Resource Manager (2022.01.00)",
+        "description": "Permissions for the Azure Virtual Desktop Resource Manager's managed identity to interact with the hostpools and VMs it monitors.",
+        "assignableScopes": [],
+        "permissions": [
+            {
+                "actions": [
+                    "Microsoft.Compute/virtualMachines/read",
+                    "Microsoft.Compute/virtualMachines/powerOff/action",
+                    "Microsoft.Compute/virtualMachines/restart/action",
+                    "Microsoft.Compute/virtualMachines/deallocate/action",
+                    "Microsoft.Compute/virtualMachines/instanceView/read",
+                    "Microsoft.DesktopVirtualization/applicationgroups/read",
+                    "Microsoft.DesktopVirtualization/applicationgroups/applications/read",
+                    "Microsoft.DesktopVirtualization/applicationgroups/desktops/read",
+                    "Microsoft.DesktopVirtualization/hostpools/read",
+                    "Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+                    "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/read",
+                    "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/disconnect/action",
+                    "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/sendMessage/action",
+                    "Microsoft.DesktopVirtualization/workspaces/read"
+                ],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}
