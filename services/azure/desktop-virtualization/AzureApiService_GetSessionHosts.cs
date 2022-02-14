@@ -38,7 +38,7 @@ public partial class AzureApiService : IAzureApiService
         );
 
         logger.LogInformation("Sending API call to '{RequestUri}'", requestMessage.RequestUri);
-        HttpResponseMessage responseMessage = await apiClient.SendAsync(requestMessage);
+        HttpResponseMessage responseMessage = await apiClient!.SendAsync(requestMessage);
 
         List<SessionHost>? sessionHosts = null;
         if (responseMessage.Content is not null)
