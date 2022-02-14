@@ -39,6 +39,8 @@ param functionAppName string = 'avd-rscmgr-func'
 @minLength(6)
 param randomHash string = utcNow()
 
+var packageUrl = 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.02/SmallsOnline-AVD-ResourceManager_v2022.01.02.zip'
+
 var uniqueNameString = uniqueString(subscription().id, randomHash)
 
 var managedIdentityName = '${functionAppName}-identity-${uniqueNameString}'
@@ -221,7 +223,7 @@ resource functionAppResource 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
-          value: 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.01/SmallsOnline-AVD-ResourceManager_v2022.01.01.zip'
+          value: packageUrl
         }
       ]
     }

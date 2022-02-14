@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1124.51302",
-      "templateHash": "2676831444958144005"
+      "templateHash": "10431089032313749531"
     }
   },
   "parameters": {
@@ -40,6 +40,7 @@
     }
   },
   "variables": {
+    "packageUrl": "https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.02/SmallsOnline-AVD-ResourceManager_v2022.01.02.zip",
     "uniqueNameString": "[uniqueString(subscription().id, parameters('randomHash'))]",
     "managedIdentityName": "[format('{0}-identity-{1}', parameters('functionAppName'), variables('uniqueNameString'))]",
     "functionAppSvcPlanName": "[format('avd-rscmgr-ASP-{0}', take(variables('uniqueNameString'), 6))]",
@@ -212,7 +213,7 @@
             },
             {
               "name": "WEBSITE_RUN_FROM_PACKAGE",
-              "value": "https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.01/SmallsOnline-AVD-ResourceManager_v2022.01.01.zip"
+              "value": "[variables('packageUrl')]"
             }
           ]
         },
