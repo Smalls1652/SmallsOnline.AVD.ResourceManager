@@ -7,12 +7,24 @@ namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
 public partial class AzureApiService : IAzureApiService
 {
+    /// <summary>
+    /// Get the <see cref="HostPool" /> items in the Azure subscription.
+    /// </summary>
+    /// <returns>An array of <see cref="HostPool" /> items.</returns>
     public List<HostPool>? GetHostPools()
     {
         Task<List<HostPool>?> apiCallTask = Task.Run(async () => await GetHostPoolsAsync());
 
         return apiCallTask.Result;
     }
+
+    /// <summary>
+    /// Get the <see cref="HostPool" /> items in the Azure subscription.
+    /// </summary>
+    /// <remarks>
+    /// This method is for running the request asynchronously from the <see cref="GetHostPools()" /> method.
+    /// </remarks>
+    /// <returns>An array of <see cref="HostPool" /> items.</returns>
     private async Task<List<HostPool>?> GetHostPoolsAsync()
     {
         Subscription defaultSubscription = await armClient.GetDefaultSubscriptionAsync();

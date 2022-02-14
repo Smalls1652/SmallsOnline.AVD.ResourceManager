@@ -7,6 +7,10 @@ namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
 public partial class CosmosDbService : ICosmosDbService
 {
+    /// <summary>
+    /// Add a hostpool, to be monitored by the resource manager, to the DB.
+    /// </summary>
+    /// <param name="hostPool">The hostpool to add for monitoring.</param>
     public void AddHostPool(HostPool hostPool)
     {
         Task addHostPoolTask = Task.Run(async () => await AddHostPoolAsync(hostPool));
@@ -14,6 +18,13 @@ public partial class CosmosDbService : ICosmosDbService
         addHostPoolTask.Wait();
     }
 
+    /// <summary>
+    /// Add a hostpool, to be monitored by the resource manager, to the DB.
+    /// </summary>
+    /// <remarks>
+    /// This method is for running the request asynchronously from the <see cref="AddHostPool()" /> method.
+    /// </remarks>
+    /// <param name="hostPool">The hostpool to add for monitoring.</param>
     private async Task AddHostPoolAsync(HostPool hostPool)
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");
