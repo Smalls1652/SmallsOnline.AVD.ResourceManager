@@ -13,15 +13,6 @@ namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 /// </summary>
 public partial class AzureApiService : IAzureApiService
 {
-    public AzureApiService()
-    {
-        armClient = new(
-            credential: defaultAzureCred
-        );
-
-        apiClient = CreateApiClient(defaultAzureCred);
-    }
-
     /// <summary>
     /// The default credential for the managed identity in Azure.
     /// </summary>
@@ -40,41 +31,15 @@ public partial class AzureApiService : IAzureApiService
     /// <summary>
     /// A generic Azure API client for accessing API endpoints not available in the Azure .NET SDK.
     /// </summary>
-    private HttpClient apiClient;
+    private HttpClient? apiClient;
 
-    /// <summary>
-    /// Create the <see cref="armClient /> and <see cref="apiClient" /> objects to be used with the service.
-    /// </summary>
-    /// <param name="azureCredential">The credential used for authenticating to Azure.</param>
-    /// <returns></returns>
-    private static HttpClient CreateApiClient(DefaultAzureCredential azureCredential)
+    private readonly ILogger logger;
+
+    public AzureApiService(ILoggerFactory loggerFactory)
     {
-        HttpClient client = new();
+        logger = loggerFactory.CreateLogger<AzureApiService>();
 
-        AccessToken accessToken = Task.Run(async () => await GetAccessTokenAsync(azureCredential)).Result;
-        client.DefaultRequestHeaders.Add(
-            name: "Authorization",
-            value: $"Bearer {accessToken.Token}"
-        );
-
-        client.BaseAddress = new("https://management.azure.com/");
-
-        return client;
-    }
-
-    /// <summary>
-    /// Get the access token for authorizing API calls.
-    /// </summary>
-    /// <param name="azureCredential">The credential used for authenticating to Azure.</param>
-    /// <returns></returns>
-    private static async Task<AccessToken> GetAccessTokenAsync(DefaultAzureCredential azureCredential)
-    {
-        AccessToken accessToken = await azureCredential.GetTokenAsync(
-            requestContext: new(
-                scopes: new[] { "https://management.azure.com/.default" }
-            )
-        );
-
-        return accessToken;
+        logger.LogInformation("Initializing AzureApiService.");
+        armClient = CreateArmClient(defaultAzureCred);
     }
 }
