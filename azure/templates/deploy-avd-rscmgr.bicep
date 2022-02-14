@@ -39,7 +39,7 @@ param functionAppName string = 'avd-rscmgr-func'
 @minLength(6)
 param randomHash string = utcNow()
 
-var packageUrl = 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.02/SmallsOnline-AVD-ResourceManager_v2022.01.02.zip'
+var packageUrl = 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.01.03/SmallsOnline-AVD-ResourceManager_v2022.01.03.zip'
 
 var uniqueNameString = uniqueString(subscription().id, randomHash)
 
