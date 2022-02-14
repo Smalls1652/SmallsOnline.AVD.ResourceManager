@@ -35,6 +35,14 @@ public partial class AzureApiService : IAzureApiService
         responseMessage.Dispose();
         requestMessage.Dispose();
 
-        return hostPools;
+        List<HostPool>? personalHostPools = null;
+        if (hostPools is not null)
+        {
+            personalHostPools = hostPools.FindAll(
+                (HostPool item) => item.Properties.HostPoolType == "Personal"
+            );
+        }
+
+        return personalHostPools;
     }
 }
