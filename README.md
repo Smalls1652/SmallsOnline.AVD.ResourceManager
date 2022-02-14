@@ -1,10 +1,15 @@
 # Azure Virtual Desktop Resource Manager
 
-**Current build status**
+Shutdown/deallocate Azure Virtual Desktop session hosts, when they're no longer being actively used, to save money on Azure costs.
+
+## Current build status
 
 [![Build](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/actions/workflows/build.yml/badge.svg?event=push&branch=main)](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/actions/workflows/build.yml)
 
-Shutdown/deallocate Azure Virtual Desktop session hosts, when they're no longer being actively used, to save money on Azure costs.
+## Projects
+
+- [Updates planned for upcoming releases](https://github.com/users/Smalls1652/projects/2)
+- [All projects for repo](https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/projects?type=beta)
 
 ## 🤔 The motive
 
