@@ -11,8 +11,11 @@ namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 /// </summary>
 public partial class CosmosDbService : ICosmosDbService
 {
-    public CosmosDbService()
+    public CosmosDbService(ILoggerFactory loggerFactory)
     {
+        logger = loggerFactory.CreateLogger<CosmosDbService>();
+
+        logger.LogError("Initializing CosmosDbService.");
         cosmosDbClient = new(
             connectionString: AppSettings.GetSetting("CosmosDbConnectionString"),
             clientOptions: new()
@@ -33,4 +36,5 @@ public partial class CosmosDbService : ICosmosDbService
             }
         }
     );
+    private readonly ILogger logger;
 }
