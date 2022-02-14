@@ -9,4 +9,5 @@ public interface IAzureApiService
 {
     VirtualMachine GetAzVM(string resourceId);
     List<SessionHost>? GetSessionHosts(AvdHostPool hostPool);
+    List<HostPool>? GetHostPools();
 }
