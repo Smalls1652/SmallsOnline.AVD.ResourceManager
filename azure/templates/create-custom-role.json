@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1124.51302",
+      "templateHash": "15909771734306798872"
+    }
+  },
+  "parameters": {
+    "uniqueHash": {
+      "type": "string",
+      "defaultValue": "[utcNow()]",
+      "minLength": 0
+    }
+  },
+  "variables": {
+    "roleGuid": "[guid(parameters('uniqueHash'), subscription().subscriptionId, subscription().tenantId)]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('roleGuid')]",
+      "properties": {
+        "roleName": "Azure Virtual Desktop Resource Manager (2022.01.00)",
+        "description": "Permissions for the Azure Virtual Desktop Resource Manager's managed identity to interact with the hostpools and VMs it monitors.",
+        "assignableScopes": [
+          "[subscription().id]"
+        ],
+        "permissions": [
+          {
+            "actions": [
+              "Microsoft.Compute/virtualMachines/read",
+              "Microsoft.Compute/virtualMachines/powerOff/action",
+              "Microsoft.Compute/virtualMachines/deallocate/action",
+              "Microsoft.Compute/virtualMachines/instanceView/read",
+              "Microsoft.DesktopVirtualization/hostpools/read",
+              "Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+              "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/read"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
