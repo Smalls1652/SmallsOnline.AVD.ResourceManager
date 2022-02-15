@@ -11,6 +11,7 @@ on:
       - "docs/*"
       - "host.json"
       - "**.md"
+      - ".gitignore"
   pull_request:
     types:
       - edited
@@ -23,6 +24,7 @@ on:
       - "docs/*"
       - "host.json"
       - "**.md"
+      - ".gitignore"
 
 jobs:
   build-function:
