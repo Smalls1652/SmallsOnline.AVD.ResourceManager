@@ -80,6 +80,7 @@ public class AzureApiClient : IAzureApiClient, IDisposable
         };
 
         // If shouldRefresh or forceRefresh are set to true, start the access token refresh.
+        // Otherwise, log that the token does not have to refresh yet.
         if (shouldRefresh || forceRefresh)
         {
             _logger.LogInformation("Access token will be refreshed.");
@@ -91,6 +92,11 @@ public class AzureApiClient : IAzureApiClient, IDisposable
             _apiClient = CreateApiClient(_accessToken);
 
             _logger.LogInformation("Access token has been refreshed.");
+        }
+        else
+        {
+            string expirationDateTimeString = tokenRefreshTime.ToString("yyyy-MM-dd HH:mm:ss zzzz");
+            _logger.LogInformation("The access token does not have to be refreshed yet. Token will refresh on or after {ExpirationDateTimeString}.", expirationDateTimeString);
         }
 
         // Set that the token is done being refreshed.
