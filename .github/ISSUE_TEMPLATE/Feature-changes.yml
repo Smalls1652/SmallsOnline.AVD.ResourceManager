@@ -14,6 +14,8 @@ body:
         - "Addition"
         - "Change/Update"
         - "Removal"
+    validations:
+      required: true
   - id: Description
     type: textarea
     attributes:
@@ -28,3 +30,5 @@ body:
       label: What are the proposed changes that need to be made?
       description: A technical description of the proposed changes to be made. (Not required)
       placeholder: Insert the technical description of the changes...
+    validations:
+      required: true
