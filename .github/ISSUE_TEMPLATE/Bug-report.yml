@@ -28,7 +28,7 @@ body:
       placeholder: Excessive wolololos
       value: N/A
     validations:
-      required: true
+      required: false
   - id: BugDescription
     type: textarea
     attributes:
