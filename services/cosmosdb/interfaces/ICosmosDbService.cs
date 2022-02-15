@@ -11,4 +11,5 @@ public interface ICosmosDbService
     AvdHost? GetAvdHost(string id);
     void UpdateAvdHost(AvdHost hostItem);
     void AddHostPool(HostPool hostPool);
+    void RemoveHostPool(AvdHostPool hostPoolItem);
 }

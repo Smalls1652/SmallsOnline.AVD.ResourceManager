@@ -41,8 +41,13 @@ public class EvaluateHostPoolsToMonitor
 
         // If the Azure API response is not null, loop through each found hostpool and add them to the DB, if not already configured.
         List<HostPool> addedHostPools = new();
+        List<AvdHostPool> removedHostPools = new();
+
+        _logger.LogInformation("Checking for any new hostpools to add.");
         if (hostPools is not null)
         {
+            // Check to see if the hostpool pulled from the Azure API is in the DB.
+            // If it isn't, then add it.
             foreach (HostPool hostPoolItem in hostPools)
             {
                 // Try to find the hostpool entry in the DB.
@@ -62,9 +67,48 @@ public class EvaluateHostPoolsToMonitor
         }
 
         // If no new hostpools were added, then log that nothing was added.
+        // Otherwise log how many were added.
         if (addedHostPools.Count == 0)
         {
             _logger.LogInformation("No new hostpools were added for monitoring.");
+        }
+        else
+        {
+            _logger.LogInformation("{Count} hostpools were added for monitoring.", addedHostPools.Count);
+        }
+
+        _logger.LogInformation("Checking for any hostpools to remove.");
+        // If the DB response is not null, loop through each found hostpool and remove them from the DB if they aren't accessible anymore.
+        if (hostPoolsInDb is not null && hostPools is not null)
+        {
+            // Check to see if the hostpool pulled from the DB was also found in the Azure API.
+            // If it isn't, then remove it.
+            foreach (AvdHostPool hostPoolDbItem in hostPoolsInDb)
+            {
+                // Try to find the hostpool entry from what was pulled from Azure.
+                HostPool? foundHostPoolItem = hostPools.Find(
+                    (HostPool item) => item.Id == hostPoolDbItem.HostPoolResourceId
+                );
+
+                // If the hostpool entry is not found, then remove it from the DB.
+                if (foundHostPoolItem is null)
+                {
+                    _logger.LogInformation("Removing '{HostPoolResourceId}' from the database, since it's no longer accessible.", hostPoolDbItem.HostPoolResourceId);
+                    removedHostPools.Add(hostPoolDbItem);
+                    _cosmosDbService.RemoveHostPool(hostPoolDbItem);
+                }
+            }
+        }
+
+        // If no hostpools were removed, then log that nothing was removed.
+        // Otherwise log how many were removed.
+        if (removedHostPools.Count == 0)
+        {
+            _logger.LogInformation("No hostpools were removed from monitoring.");
+        }
+        else
+        {
+            _logger.LogInformation("{Count} hostpools were removed from monitoring.", removedHostPools.Count);
         }
     }
 }
