@@ -4,13 +4,25 @@ on:
   push:
     paths-ignore:
       - ".github/workflows/create-zip-artifact.yml"
+      - ".github/ISSUE_TEMPLATE/*"
       - ".github/dependabot.yml"
       - ".vscode/*"
       - "azure/*"
       - "docs/*"
       - "host.json"
       - "**.md"
-  pull_request:  
+  pull_request:
+    types:
+      - edited
+    paths-ignore:
+      - ".github/workflows/create-zip-artifact.yml"
+      - ".github/ISSUE_TEMPLATE/*"
+      - ".github/dependabot.yml"
+      - ".vscode/*"
+      - "azure/*"
+      - "docs/*"
+      - "host.json"
+      - "**.md"
 
 jobs:
   build-function:
