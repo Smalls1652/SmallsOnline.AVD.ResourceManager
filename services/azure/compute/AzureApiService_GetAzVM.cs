@@ -1,7 +1,4 @@
-using Azure.ResourceManager;
 using Azure.ResourceManager.Compute;
-
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 

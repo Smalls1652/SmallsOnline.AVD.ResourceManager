@@ -1,5 +1,3 @@
-using System.Web;
-
 using SmallsOnline.AVD.ResourceManager.Models.AVD;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.Generic;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
@@ -29,16 +27,13 @@ public partial class AzureApiService : IAzureApiService
     /// <returns>An array of all sessions hosts currently in the hostpool.</returns>
     private async Task<List<SessionHost>?> GetSessionHostsAsync(AvdHostPool hostPool)
     {
-        // Refresh the API client with a new token.
-        UpdateApiClient();
-
         HttpRequestMessage requestMessage = new(
             method: HttpMethod.Get,
             requestUri: $"{hostPool.HostPoolResourceId}/sessionHosts?api-version=2021-07-12"
         );
 
         logger.LogInformation("Sending API call to '{RequestUri}'", requestMessage.RequestUri);
-        HttpResponseMessage responseMessage = await apiClient!.SendAsync(requestMessage);
+        HttpResponseMessage responseMessage = await azureApiClient.SendAsync(requestMessage);
 
         List<SessionHost>? sessionHosts = null;
         if (responseMessage.Content is not null)

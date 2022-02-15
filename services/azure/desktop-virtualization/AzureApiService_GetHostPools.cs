@@ -26,10 +26,7 @@ public partial class AzureApiService : IAzureApiService
     /// </remarks>
     /// <returns>An array of <see cref="HostPool" /> items.</returns>
     private async Task<List<HostPool>?> GetHostPoolsAsync()
-    {
-        // Refresh the API client with a new token.
-        UpdateApiClient();
-        
+    {   
         Subscription defaultSubscription = await armClient.GetDefaultSubscriptionAsync();
 
         HttpRequestMessage requestMessage = new(
@@ -38,7 +35,7 @@ public partial class AzureApiService : IAzureApiService
         );
 
         logger.LogInformation("Sending API call to '{RequestUri}'", requestMessage.RequestUri);
-        HttpResponseMessage responseMessage = await apiClient!.SendAsync(requestMessage);
+        HttpResponseMessage responseMessage = await azureApiClient.SendAsync(requestMessage);
 
         List<HostPool>? hostPools = null;
         if (responseMessage.Content is not null)

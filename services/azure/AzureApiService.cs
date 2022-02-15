@@ -1,10 +1,5 @@
-using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
-using Azure.ResourceManager.Core;
-using Azure.ResourceManager.Compute;
-
-using SmallsOnline.AVD.ResourceManager.Helpers;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
@@ -26,12 +21,12 @@ public partial class AzureApiService : IAzureApiService
     /// <summary>
     /// The Azure Resource Manager API client.
     /// </summary>
-    private ArmClient armClient;
+    private readonly ArmClient armClient;
 
     /// <summary>
     /// A generic Azure API client for accessing API endpoints not available in the Azure .NET SDK.
     /// </summary>
-    private HttpClient? apiClient;
+    private readonly AzureApiClient azureApiClient;
 
     private readonly ILogger logger;
 
@@ -41,5 +36,9 @@ public partial class AzureApiService : IAzureApiService
 
         logger.LogInformation("Initializing AzureApiService.");
         armClient = CreateArmClient(defaultAzureCred);
+        azureApiClient = new(
+            defaultAzureCredential: defaultAzureCred,
+            loggerFactory: loggerFactory
+        );
     }
 }
