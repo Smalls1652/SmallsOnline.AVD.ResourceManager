@@ -1,4 +1,3 @@
-using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
 

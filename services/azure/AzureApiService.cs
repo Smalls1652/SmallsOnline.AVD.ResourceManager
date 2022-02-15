@@ -1,10 +1,5 @@
-using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
-using Azure.ResourceManager.Core;
-using Azure.ResourceManager.Compute;
-
-using SmallsOnline.AVD.ResourceManager.Helpers;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
