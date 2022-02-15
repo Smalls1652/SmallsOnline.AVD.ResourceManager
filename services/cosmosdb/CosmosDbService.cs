@@ -15,7 +15,7 @@ public partial class CosmosDbService : ICosmosDbService
     {
         logger = loggerFactory.CreateLogger<CosmosDbService>();
 
-        logger.LogError("Initializing CosmosDbService.");
+        logger.LogInformation("Initializing CosmosDbService.");
         cosmosDbClient = new(
             connectionString: AppSettings.GetSetting("CosmosDbConnectionString"),
             clientOptions: new()
