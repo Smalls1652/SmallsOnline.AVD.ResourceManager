@@ -1,0 +1,30 @@
+name: Feature changes
+description: Adding new features or changing existing features
+labels:
+  - "enhancement"
+title: "[Feature]: "
+body:
+  - id: ChangeType
+    type: dropdown
+    attributes:
+      label: What kind of change is this?
+      description: The type of change this will have on the project.
+      multiple: false
+      options:
+        - "Addition"
+        - "Change/Update"
+        - "Removal"
+  - id: Description
+    type: textarea
+    attributes:
+      label: What's the description of the change?
+      description: A description of the change.
+      placeholder: Insert a detailed description of the change...
+    validations:
+      required: false
+  - id: ProposedChangesDescription
+    type: textarea
+    attributes:
+      label: What's the proposed changes that need to be made?
+      description: A technical description of the proposed changes to be made. (Not required)
+      placeholder: Insert the technical description of the changes...
