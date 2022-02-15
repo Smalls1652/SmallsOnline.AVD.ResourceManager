@@ -23,7 +23,7 @@ body:
       description: A description of the change.
       placeholder: Insert a detailed description of the change...
     validations:
-      required: false
+      required: true
   - id: ProposedChangesDescription
     type: textarea
     attributes:
@@ -31,4 +31,4 @@ body:
       description: A technical description of the proposed changes to be made. (Not required)
       placeholder: Insert the technical description of the changes...
     validations:
-      required: true
+      required: false
