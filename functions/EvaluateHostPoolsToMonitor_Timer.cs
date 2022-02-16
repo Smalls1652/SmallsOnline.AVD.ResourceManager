@@ -96,6 +96,20 @@ public class EvaluateHostPoolsToMonitor
                     _logger.LogInformation("Removing '{HostPoolResourceId}' from the database, since it's no longer accessible.", hostPoolDbItem.HostPoolResourceId);
                     removedHostPools.Add(hostPoolDbItem);
                     _cosmosDbService.RemoveHostPool(hostPoolDbItem);
+
+                    // Start the clean up process of session hosts from the hostpool that were registered in the DB.
+                    _logger.LogInformation("Removing any session host from the DB that was registered to {HostPoolResourceId}", hostPoolDbItem.HostPoolResourceId);
+                    List<AvdHost>? hostsInDb = _cosmosDbService.GetAvdHosts(hostPoolDbItem.HostPoolResourceId);
+
+                    // If hostsInDb is not null, then remove each host from the DB.
+                    if (hostsInDb is not null)
+                    {
+                        foreach (AvdHost hostItem in hostsInDb)
+                        {
+                            _cosmosDbService.RemoveAvdHost(hostItem);
+                            _logger.LogInformation("'{VmResourceId}' was removed from the DB.", hostItem.VmResourceId);
+                        }
+                    }
                 }
             }
         }

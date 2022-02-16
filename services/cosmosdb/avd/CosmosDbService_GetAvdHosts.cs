@@ -11,9 +11,9 @@ public partial class CosmosDbService : ICosmosDbService
     /// Get all of the registered Azure Virtual Desktop session hosts in the database.
     /// </summary>
     /// <returns>An array/collection of <see cref="AvdHost" /> hosts.</returns>
-    public List<AvdHost>? GetAvdHosts()
+    public List<AvdHost>? GetAvdHosts(string? hostPoolResourceId = null)
     {
-        Task<List<AvdHost>?> getFromDbTask = Task.Run(async () => await GetAvdHostsAsync());
+        Task<List<AvdHost>?> getFromDbTask = Task.Run(async () => await GetAvdHostsAsync(hostPoolResourceId));
 
         return getFromDbTask.Result;
     }
@@ -25,12 +25,18 @@ public partial class CosmosDbService : ICosmosDbService
     /// This method is for running the request asynchronously from the <see cref="GetAvdHosts()" /> method.
     /// </remarks>
     /// <returns>An array/collection of <see cref="AvdHost" /> hosts.</returns>
-    private async Task<List<AvdHost>?> GetAvdHostsAsync()
+    private async Task<List<AvdHost>?> GetAvdHostsAsync(string? hostPoolResourceId = null)
     {
         List<AvdHost>? retrievedAvdHosts = new();
 
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");
-        QueryDefinition queryDef = new($"SELECT * FROM c WHERE c.partitionKey = \"avd-host-items\"");
+
+        // Create a query based off whether or not the hostpool resource ID was supplied.
+        QueryDefinition queryDef = string.IsNullOrEmpty(hostPoolResourceId) switch
+        {
+            false => new($"SELECT * FROM c WHERE c.partitionKey = \"avd-host-items\" and c.hostPoolResourceId = \"{hostPoolResourceId}\""),
+            _ => new($"SELECT * FROM c WHERE c.partitionKey = \"avd-host-items\"")
+        };
 
         FeedIterator<AvdHost> containerQueryIterator = container.GetItemQueryIterator<AvdHost>(queryDef);
         while (containerQueryIterator.HasMoreResults)

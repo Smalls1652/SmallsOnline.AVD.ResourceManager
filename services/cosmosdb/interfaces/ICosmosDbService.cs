@@ -5,11 +5,12 @@ namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
 public interface ICosmosDbService
 {
-    List<AvdHost>? GetAvdHosts();
+    List<AvdHost>? GetAvdHosts(string? hostPoolResourceId = null);
     AvdHostPool GetAvdHostPool(string id);
     List<AvdHostPool> GetAvdHostPools();
     AvdHost? GetAvdHost(string id);
     void UpdateAvdHost(AvdHost hostItem);
     void AddHostPool(HostPool hostPool);
     void RemoveHostPool(AvdHostPool hostPoolItem);
+    void RemoveAvdHost(AvdHost hostItem);
 }
