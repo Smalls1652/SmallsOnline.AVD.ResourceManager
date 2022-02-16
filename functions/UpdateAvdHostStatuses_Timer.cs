@@ -45,8 +45,29 @@ public class UpdateAvdHostStatuses_Timer
 
             // Get the session hosts in the hostpool.
             List<SessionHost>? sessionHosts = _azureApiService.GetSessionHosts(hostPoolItem);
+
             if (sessionHosts is not null)
             {
+                // Start a check for session hosts that need to be removed from the DB.
+                List<AvdHost>? hostsInDb = _cosmosDbService.GetAvdHosts(hostPoolItem.HostPoolResourceId);
+                if (hostsInDb is not null)
+                {
+                    foreach (AvdHost hostItem in hostsInDb)
+                    {
+                        // See if the session host was returned by the Azure API.
+                        SessionHost? foundSessionHost = sessionHosts.Find(
+                            (SessionHost item) => item.Properties.ResourceId == hostItem.VmResourceId
+                        );
+
+                        // If it wasn't found, then remove it from the DB.
+                        if (foundSessionHost is null)
+                        {
+                            _cosmosDbService.RemoveAvdHost(hostItem);
+                            _logger.LogWarning("'{VmResourceId}' was removed from the DB.", hostItem.VmResourceId);
+                        }
+                    }
+                }
+
                 // Loop through each session host in the hostpool.
                 foreach (SessionHost sessionHostItem in sessionHosts)
                 {
