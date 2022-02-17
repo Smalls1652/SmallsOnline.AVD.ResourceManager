@@ -13,7 +13,7 @@ public class SessionHostDbEntry : ISessionHostDbEntry
 {
     [JsonConstructor()]
     public SessionHostDbEntry() { }
-    public SessionHostDbEntry(VirtualMachineData virtualMachineData, AvdHostPool avdHostPool, SessionHost avdSessionHostData, SessionHostDbEntry? previousHostData)
+    public SessionHostDbEntry(VirtualMachineData virtualMachineData, HostPoolDbEntry avdHostPool, SessionHost avdSessionHostData, SessionHostDbEntry? previousHostData)
     {
         Id = avdSessionHostData.Properties?.ObjectId;
         PartitionKey = "avd-host-items";
