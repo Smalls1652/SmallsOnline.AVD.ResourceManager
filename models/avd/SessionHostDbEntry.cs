@@ -9,11 +9,11 @@ namespace SmallsOnline.AVD.ResourceManager.Models.Database;
 /// 
 /// Note: This is the data that goes into the database.
 /// </summary>
-public class AvdHost : IAvdHost
+public class SessionHostDbEntry : ISessionHostDbEntry
 {
     [JsonConstructor()]
-    public AvdHost() { }
-    public AvdHost(VirtualMachineData virtualMachineData, AvdHostPool avdHostPool, SessionHost avdSessionHostData, AvdHost? previousHostData)
+    public SessionHostDbEntry() { }
+    public SessionHostDbEntry(VirtualMachineData virtualMachineData, AvdHostPool avdHostPool, SessionHost avdSessionHostData, SessionHostDbEntry? previousHostData)
     {
         Id = avdSessionHostData.Properties?.ObjectId;
         PartitionKey = "avd-host-items";
