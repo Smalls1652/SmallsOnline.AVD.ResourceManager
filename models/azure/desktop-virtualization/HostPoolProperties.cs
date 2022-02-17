@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 
 /// <summary>

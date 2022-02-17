@@ -1,6 +1,5 @@
 using Microsoft.Azure.Cosmos;
 
-using SmallsOnline.AVD.ResourceManager.Helpers;
 using SmallsOnline.AVD.ResourceManager.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;

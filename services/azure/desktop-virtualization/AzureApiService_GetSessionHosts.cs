@@ -1,6 +1,7 @@
 using SmallsOnline.AVD.ResourceManager.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.Generic;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
+
 namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
 public partial class AzureApiService : IAzureApiService

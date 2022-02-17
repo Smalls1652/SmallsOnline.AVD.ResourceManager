@@ -3,7 +3,6 @@ using Azure.ResourceManager.Compute.Models;
 
 using SmallsOnline.AVD.ResourceManager.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
-using SmallsOnline.AVD.ResourceManager.Models.Json;
 
 namespace SmallsOnline.AVD.ResourceManager.Functions;
 
