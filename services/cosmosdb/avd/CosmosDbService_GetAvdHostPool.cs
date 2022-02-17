@@ -1,6 +1,6 @@
 using Microsoft.Azure.Cosmos;
 
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
@@ -11,11 +11,11 @@ public partial class CosmosDbService : ICosmosDbService
     /// </summary>
     /// <param name="id">The unique ID of the hostpool in the database.</param>
     /// <returns>An <see cref="AvdHostPool" /> object.</returns>
-    public AvdHostPool GetAvdHostPool(string id)
+    public HostPoolDbEntry GetAvdHostPool(string id)
     {
-        Task<AvdHostPool> getAvdHostPoolTask = Task.Run(async () => await GetAvdHostPoolAsync(id));
+        Task<HostPoolDbEntry> getAvdHostPoolTask = Task.Run(async () => await GetAvdHostPoolAsync(id));
 
-        AvdHostPool hostPoolItem;
+        HostPoolDbEntry hostPoolItem;
         try
         {
             hostPoolItem = getAvdHostPoolTask.Result;
@@ -43,14 +43,14 @@ public partial class CosmosDbService : ICosmosDbService
     /// </remarks>
     /// <param name="id">The unique ID of the hostpool in the database.</param>
     /// <returns>An <see cref="AvdHostPool" /> object.</returns>
-    private async Task<AvdHostPool> GetAvdHostPoolAsync(string id)
+    private async Task<HostPoolDbEntry> GetAvdHostPoolAsync(string id)
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");
 
-        ItemResponse<AvdHostPool> hostPoolItem;
+        ItemResponse<HostPoolDbEntry> hostPoolItem;
         try
         {
-            hostPoolItem = await container.ReadItemAsync<AvdHostPool>(
+            hostPoolItem = await container.ReadItemAsync<HostPoolDbEntry>(
                 id: id,
                 partitionKey: new("avd-hostpool-items")
             );

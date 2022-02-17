@@ -2,18 +2,18 @@ using Azure.ResourceManager.Compute;
 
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 
-namespace SmallsOnline.AVD.ResourceManager.Models.AVD;
+namespace SmallsOnline.AVD.ResourceManager.Models.Database;
 
 /// <summary>
 /// Data for an Azure Virtual Desktop session host.
 /// 
 /// Note: This is the data that goes into the database.
 /// </summary>
-public class AvdHost : IAvdHost
+public class SessionHostDbEntry : ISessionHostDbEntry
 {
     [JsonConstructor()]
-    public AvdHost() { }
-    public AvdHost(VirtualMachineData virtualMachineData, AvdHostPool avdHostPool, SessionHost avdSessionHostData, AvdHost? previousHostData)
+    public SessionHostDbEntry() { }
+    public SessionHostDbEntry(VirtualMachineData virtualMachineData, HostPoolDbEntry avdHostPool, SessionHost avdSessionHostData, SessionHostDbEntry? previousHostData)
     {
         Id = avdSessionHostData.Properties?.ObjectId;
         PartitionKey = "avd-host-items";

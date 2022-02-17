@@ -1,7 +1,7 @@
 using Microsoft.Azure.Cosmos;
 
 using SmallsOnline.AVD.ResourceManager.Helpers;
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
@@ -12,9 +12,9 @@ public partial class CosmosDbService : ICosmosDbService
     /// </summary>
     /// <param name="id">The ID of the host.</param>
     /// <returns>An <see cref="AvdHost" /> object.</returns>
-    public AvdHost? GetAvdHost(string id)
+    public SessionHostDbEntry? GetAvdHost(string id)
     {
-        Task<AvdHost?> getFromDbTask = Task.Run(async () => await GetAvdHostAsync(id));
+        Task<SessionHostDbEntry?> getFromDbTask = Task.Run(async () => await GetAvdHostAsync(id));
 
         return getFromDbTask.Result;
     }
@@ -27,15 +27,15 @@ public partial class CosmosDbService : ICosmosDbService
     /// </remarks>
     /// <param name="id">The ID of the host.</param>
     /// <returns>An <see cref="AvdHost" /> object.</returns>
-    private async Task<AvdHost?> GetAvdHostAsync(string id)
+    private async Task<SessionHostDbEntry?> GetAvdHostAsync(string id)
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");
 
-        AvdHost? hostItem;
+        SessionHostDbEntry? hostItem;
 
         try
         {
-            hostItem = await container.ReadItemAsync<AvdHost>(
+            hostItem = await container.ReadItemAsync<SessionHostDbEntry>(
                 id: id,
                 partitionKey: new("avd-host-items")
             );

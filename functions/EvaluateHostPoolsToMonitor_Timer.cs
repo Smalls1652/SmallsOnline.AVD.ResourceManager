@@ -1,5 +1,5 @@
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Functions;
 
@@ -37,11 +37,11 @@ public class EvaluateHostPoolsToMonitor
         List<HostPool>? hostPools = _azureApiService.GetHostPools();
 
         _logger.LogInformation("Getting hostpools already configured for monitoring in DB.");
-        List<AvdHostPool> hostPoolsInDb = _cosmosDbService.GetAvdHostPools();
+        List<HostPoolDbEntry> hostPoolsInDb = _cosmosDbService.GetAvdHostPools();
 
         // If the Azure API response is not null, loop through each found hostpool and add them to the DB, if not already configured.
         List<HostPool> addedHostPools = new();
-        List<AvdHostPool> removedHostPools = new();
+        List<HostPoolDbEntry> removedHostPools = new();
 
         _logger.LogInformation("Checking for any new hostpools to add.");
         if (hostPools is not null)
@@ -51,8 +51,8 @@ public class EvaluateHostPoolsToMonitor
             foreach (HostPool hostPoolItem in hostPools)
             {
                 // Try to find the hostpool entry in the DB.
-                AvdHostPool? foundDbItem = hostPoolsInDb.Find(
-                    (AvdHostPool item) => item.HostPoolResourceId == hostPoolItem.Id
+                HostPoolDbEntry? foundDbItem = hostPoolsInDb.Find(
+                    (HostPoolDbEntry item) => item.HostPoolResourceId == hostPoolItem.Id
                 );
 
                 // If the hostpool entry is not found, then add it to the DB.
@@ -83,7 +83,7 @@ public class EvaluateHostPoolsToMonitor
         {
             // Check to see if the hostpool pulled from the DB was also found in the Azure API.
             // If it isn't, then remove it.
-            foreach (AvdHostPool hostPoolDbItem in hostPoolsInDb)
+            foreach (HostPoolDbEntry hostPoolDbItem in hostPoolsInDb)
             {
                 // Try to find the hostpool entry from what was pulled from Azure.
                 HostPool? foundHostPoolItem = hostPools.Find(
@@ -99,12 +99,12 @@ public class EvaluateHostPoolsToMonitor
 
                     // Start the clean up process of session hosts from the hostpool that were registered in the DB.
                     _logger.LogInformation("Removing any session host from the DB that was registered to {HostPoolResourceId}", hostPoolDbItem.HostPoolResourceId);
-                    List<AvdHost>? hostsInDb = _cosmosDbService.GetAvdHosts(hostPoolDbItem.HostPoolResourceId);
+                    List<SessionHostDbEntry>? hostsInDb = _cosmosDbService.GetAvdHosts(hostPoolDbItem.HostPoolResourceId);
 
                     // If hostsInDb is not null, then remove each host from the DB.
                     if (hostsInDb is not null)
                     {
-                        foreach (AvdHost hostItem in hostsInDb)
+                        foreach (SessionHostDbEntry hostItem in hostsInDb)
                         {
                             _cosmosDbService.RemoveAvdHost(hostItem);
                             _logger.LogInformation("'{VmResourceId}' was removed from the DB.", hostItem.VmResourceId);

@@ -1,13 +1,13 @@
-namespace SmallsOnline.AVD.ResourceManager.Models.AVD;
+namespace SmallsOnline.AVD.ResourceManager.Models.Database;
 
 /// <summary>
 /// Data for an Azure Virtual Desktop hostpool.
 /// 
 /// Note: This is the data that goes into the database.
 /// </summary>
-public class AvdHostPool : IAvdHostPool
+public class HostPoolDbEntry : IHostPoolDbEntry
 {
-    public AvdHostPool() {}
+    public HostPoolDbEntry() {}
 
     /// <summary>
     /// A unique identifier for the item.

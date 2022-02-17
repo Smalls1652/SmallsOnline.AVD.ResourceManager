@@ -1,6 +1,6 @@
 using Microsoft.Azure.Cosmos;
 
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
@@ -10,11 +10,11 @@ public partial class CosmosDbService : ICosmosDbService
     /// Get all of the registered Azure Virtual Desktop hostpools in the database.
     /// </summary>
     /// <returns>An array/collection of <see cref="AvdHostPool" /> objects.</returns>
-    public List<AvdHostPool> GetAvdHostPools()
+    public List<HostPoolDbEntry> GetAvdHostPools()
     {
-        Task<List<AvdHostPool>> getAvdHostPoolsTask = Task.Run(async () => await GetAvdHostPoolsAsync());
+        Task<List<HostPoolDbEntry>> getAvdHostPoolsTask = Task.Run(async () => await GetAvdHostPoolsAsync());
 
-        List<AvdHostPool> hostPoolItems;
+        List<HostPoolDbEntry> hostPoolItems;
         try
         {
             hostPoolItems = getAvdHostPoolsTask.Result;
@@ -41,18 +41,18 @@ public partial class CosmosDbService : ICosmosDbService
     /// This method is for running the request asynchronously from the <see cref="GetAvdHostPools()" /> method.
     /// </remarks>
     /// <returns>An array/collection of <see cref="AvdHostPool" /> objects.</returns>
-    private async Task<List<AvdHostPool>> GetAvdHostPoolsAsync()
+    private async Task<List<HostPoolDbEntry>> GetAvdHostPoolsAsync()
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");
         QueryDefinition queryDefinition = new("SELECT * FROM c WHERE c.partitionKey = \"avd-hostpool-items\"");
 
-        List<AvdHostPool> hostPoolItems = new();
+        List<HostPoolDbEntry> hostPoolItems = new();
         try
         {
-            FeedIterator<AvdHostPool> queryIterator = container.GetItemQueryIterator<AvdHostPool>(queryDefinition);
+            FeedIterator<HostPoolDbEntry> queryIterator = container.GetItemQueryIterator<HostPoolDbEntry>(queryDefinition);
             while (queryIterator.HasMoreResults)
             {
-                foreach (AvdHostPool item in await queryIterator.ReadNextAsync())
+                foreach (HostPoolDbEntry item in await queryIterator.ReadNextAsync())
                 {
                     hostPoolItems.Add(item);
                 }
