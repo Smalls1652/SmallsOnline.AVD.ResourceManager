@@ -13,8 +13,6 @@ on:
       - "**.md"
       - ".gitignore"
   pull_request:
-    types:
-      - edited
     paths-ignore:
       - ".github/workflows/create-zip-artifact.yml"
       - ".github/ISSUE_TEMPLATE/*"
