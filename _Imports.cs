@@ -7,11 +7,6 @@ global using System.Text.Json.Serialization;
 global using System.Threading.Tasks;
 
 global using Microsoft.Azure.Functions.Worker;
-global using Microsoft.Azure.Functions.Worker.Configuration;
-global using Microsoft.Azure.Functions.Worker.Http;
-global using Microsoft.Azure.Functions.Worker.Extensions;
-
-//global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
