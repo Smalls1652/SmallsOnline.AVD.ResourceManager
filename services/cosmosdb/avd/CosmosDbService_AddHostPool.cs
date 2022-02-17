@@ -1,6 +1,6 @@
 using Microsoft.Azure.Cosmos;
 
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
@@ -29,7 +29,7 @@ public partial class CosmosDbService : ICosmosDbService
     {
         Container container = cosmosDbClient.GetContainer(AppSettings.GetSetting("CosmosDbDatabaseName"), "monitored-hosts");
 
-        AvdHostPool hostPoolDbItem = new()
+        HostPoolDbEntry hostPoolDbItem = new()
         {
             Id = Guid.NewGuid().ToString(),
             PartitionKey = "avd-hostpool-items",

@@ -1,7 +1,7 @@
 using Azure.ResourceManager.Compute;
 using Azure.ResourceManager.Compute.Models;
 
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 using SmallsOnline.AVD.ResourceManager.Models.Json;
 
@@ -36,10 +36,10 @@ public class UpdateAvdHostStatuses_Timer
         _logger.LogInformation("Timer for updating sessions host was triggered.");
 
         // Get all of the hostpools registered in the database.
-        List<AvdHostPool> retrievedHostPools = _cosmosDbService.GetAvdHostPools();
+        List<HostPoolDbEntry> retrievedHostPools = _cosmosDbService.GetAvdHostPools();
 
         // Loop through each hostpool.
-        foreach (AvdHostPool hostPoolItem in retrievedHostPools)
+        foreach (HostPoolDbEntry hostPoolItem in retrievedHostPools)
         {
             _logger.LogInformation("Getting session hosts for hostpool: {HostPoolName}", hostPoolItem.HostPoolResourceId);
 
@@ -49,10 +49,10 @@ public class UpdateAvdHostStatuses_Timer
             if (sessionHosts is not null)
             {
                 // Start a check for session hosts that need to be removed from the DB.
-                List<AvdHost>? hostsInDb = _cosmosDbService.GetAvdHosts(hostPoolItem.HostPoolResourceId);
+                List<SessionHostDbEntry>? hostsInDb = _cosmosDbService.GetAvdHosts(hostPoolItem.HostPoolResourceId);
                 if (hostsInDb is not null)
                 {
-                    foreach (AvdHost hostItem in hostsInDb)
+                    foreach (SessionHostDbEntry hostItem in hostsInDb)
                     {
                         // See if the session host was returned by the Azure API.
                         SessionHost? foundSessionHost = sessionHosts.Find(
@@ -91,7 +91,7 @@ public class UpdateAvdHostStatuses_Timer
                             .Data;
 
                         // Get data about the session host in the database.
-                        AvdHost? avdHostData;
+                        SessionHostDbEntry? avdHostData;
                         avdHostData = _cosmosDbService.GetAvdHost(sessionHostItem.Properties.ObjectId);
 
                         // If no data was returned from the database, then initialize an object for the session host.

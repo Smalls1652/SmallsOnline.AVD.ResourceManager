@@ -1,16 +1,16 @@
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 
 public interface ICosmosDbService
 {
-    List<AvdHost>? GetAvdHosts(string? hostPoolResourceId = null);
-    AvdHostPool GetAvdHostPool(string id);
-    List<AvdHostPool> GetAvdHostPools();
-    AvdHost? GetAvdHost(string id);
-    void UpdateAvdHost(AvdHost hostItem);
+    List<SessionHostDbEntry>? GetAvdHosts(string? hostPoolResourceId = null);
+    HostPoolDbEntry GetAvdHostPool(string id);
+    List<HostPoolDbEntry> GetAvdHostPools();
+    SessionHostDbEntry? GetAvdHost(string id);
+    void UpdateAvdHost(SessionHostDbEntry hostItem);
     void AddHostPool(HostPool hostPool);
-    void RemoveHostPool(AvdHostPool hostPoolItem);
-    void RemoveAvdHost(AvdHost hostItem);
+    void RemoveHostPool(HostPoolDbEntry hostPoolItem);
+    void RemoveAvdHost(SessionHostDbEntry hostItem);
 }

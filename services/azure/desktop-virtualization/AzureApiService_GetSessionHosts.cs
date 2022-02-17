@@ -1,4 +1,4 @@
-using SmallsOnline.AVD.ResourceManager.Models.AVD;
+using SmallsOnline.AVD.ResourceManager.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.Generic;
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
@@ -10,7 +10,7 @@ public partial class AzureApiService : IAzureApiService
     /// </summary>
     /// <param name="hostPool">The hostpool of the session hosts.</param>
     /// <returns>An array of all sessions hosts currently in the hostpool.</returns>
-    public List<SessionHost>? GetSessionHosts(AvdHostPool hostPool)
+    public List<SessionHost>? GetSessionHosts(HostPoolDbEntry hostPool)
     {
         Task<List<SessionHost>?> apiCallTask = Task.Run(async () => await GetSessionHostsAsync(hostPool));
 
@@ -25,7 +25,7 @@ public partial class AzureApiService : IAzureApiService
     /// </remarks>
     /// <param name="hostPool">The hostpool of the session hosts.</param>
     /// <returns>An array of all sessions hosts currently in the hostpool.</returns>
-    private async Task<List<SessionHost>?> GetSessionHostsAsync(AvdHostPool hostPool)
+    private async Task<List<SessionHost>?> GetSessionHostsAsync(HostPoolDbEntry hostPool)
     {
         HttpRequestMessage requestMessage = new(
             method: HttpMethod.Get,
