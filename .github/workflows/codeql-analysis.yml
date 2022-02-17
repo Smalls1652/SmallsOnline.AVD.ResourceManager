@@ -15,18 +15,6 @@ on:
       - ".gitignore"
   pull_request:
     branches: [ main ]
-    types:
-      - edited
-    paths-ignore:
-      - ".github/workflows/create-zip-artifact.yml"
-      - ".github/ISSUE_TEMPLATE/*"
-      - ".github/dependabot.yml"
-      - ".vscode/*"
-      - "azure/*"
-      - "docs/*"
-      - "host.json"
-      - "**.md"
-      - ".gitignore"
   schedule:
     - cron: '39 0 * * 0'
 
