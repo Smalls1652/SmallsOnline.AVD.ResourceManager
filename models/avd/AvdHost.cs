@@ -2,7 +2,7 @@ using Azure.ResourceManager.Compute;
 
 using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
 
-namespace SmallsOnline.AVD.ResourceManager.Models.AVD;
+namespace SmallsOnline.AVD.ResourceManager.Models.Database;
 
 /// <summary>
 /// Data for an Azure Virtual Desktop session host.
