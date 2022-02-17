@@ -1,6 +1,6 @@
 namespace SmallsOnline.AVD.ResourceManager.Models.Database;
 
-public interface IAvdHostPool
+public interface IHostPoolDbEntry
 {
     string? Id { get; set; }
     string? PartitionKey { get; set; }
