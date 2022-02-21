@@ -31,7 +31,6 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'csharp' ]
-        project_path: [ './src/SmallsOnline.AVD.ResourceManager' ]
 
     steps:
       - name: Checkout repository
@@ -48,11 +47,8 @@ jobs:
         with:
           dotnet-version: "6.0.x"
 
-      - name: Build library
-        run: |
-          dotnet restore
-          dotnet publish --configuration Release
-        working-directory: ${{ matrix.project_path }}
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
