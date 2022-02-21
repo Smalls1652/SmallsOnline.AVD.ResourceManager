@@ -2,6 +2,11 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Azurite: Blob start",
+			"command": "${command:azurite.start_blob}",
+			"problemMatcher": []
+		},
+		{
 			"label": "clean (functions)",
 			"command": "dotnet",
 			"args": [
@@ -9,6 +14,9 @@
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+			},
 			"type": "process",
 			"problemMatcher": "$msCompile"
 		},
@@ -20,6 +28,9 @@
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+			},
 			"type": "process",
 			"dependsOn": "clean (functions)",
 			"group": {
@@ -38,6 +49,9 @@
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+			},
 			"type": "process",
 			"problemMatcher": "$msCompile"
 		},
@@ -51,19 +65,26 @@
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+			},
 			"type": "process",
 			"dependsOn": "clean release (functions)",
 			"problemMatcher": "$msCompile"
 		},
 		{
+			"label": "func: host start",
 			"type": "func",
-			"dependsOn": "build (functions)",
-			"options": {
-				"cwd": "${workspaceFolder}/bin/Debug/net6.0"
-			},
 			"command": "host start",
+			"options": {
+				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager/bin/Debug/net6.0"
+			},
 			"isBackground": true,
-			"problemMatcher": "$func-dotnet-watch"
+			"problemMatcher": "$func-dotnet-watch",
+			"dependsOn": [
+				"build (functions)",
+				"Azurite: Blob start"
+			]
 		}
 	]
 }
