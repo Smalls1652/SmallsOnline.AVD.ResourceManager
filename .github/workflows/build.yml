@@ -47,9 +47,11 @@ jobs:
 
       - name: Run 'dotnet restore'
         run: dotnet restore
+        working-directory: 'src/SmallsOnline.AVD.ResourceManager'
 
       - name: Run MSBuild
         run: dotnet build --configuration "${{ matrix.configuration }}"
+        working-directory: 'src/SmallsOnline.AVD.ResourceManager'
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v2

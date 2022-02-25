@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28F9B69C-44F9-4E3E-AB56-36EEDDDDF5D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallsOnline.AVD.ResourceManager", "src\SmallsOnline.AVD.ResourceManager\SmallsOnline.AVD.ResourceManager.csproj", "{86AAEF13-D38A-47AB-A51B-EA75CBB88DD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallsOnline.AVD.ResourceManager.Lib", "src\SmallsOnline.AVD.ResourceManager.Lib\SmallsOnline.AVD.ResourceManager.Lib.csproj", "{BA9C96A3-8052-45F3-B9A8-5B596FA4B82F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86AAEF13-D38A-47AB-A51B-EA75CBB88DD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86AAEF13-D38A-47AB-A51B-EA75CBB88DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86AAEF13-D38A-47AB-A51B-EA75CBB88DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86AAEF13-D38A-47AB-A51B-EA75CBB88DD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9C96A3-8052-45F3-B9A8-5B596FA4B82F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9C96A3-8052-45F3-B9A8-5B596FA4B82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9C96A3-8052-45F3-B9A8-5B596FA4B82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9C96A3-8052-45F3-B9A8-5B596FA4B82F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{86AAEF13-D38A-47AB-A51B-EA75CBB88DD3} = {28F9B69C-44F9-4E3E-AB56-36EEDDDDF5D7}
+		{BA9C96A3-8052-45F3-B9A8-5B596FA4B82F} = {28F9B69C-44F9-4E3E-AB56-36EEDDDDF5D7}
+	EndGlobalSection
+EndGlobal
