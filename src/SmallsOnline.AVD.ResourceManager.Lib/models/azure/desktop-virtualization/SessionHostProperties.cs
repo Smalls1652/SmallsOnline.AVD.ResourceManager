@@ -1,4 +1,4 @@
-namespace SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
+namespace SmallsOnline.AVD.ResourceManager.Lib.Models.Azure.DesktopVirtualization;
 
 /// <summary>
 /// Property data of an Azure Virtual Desktop session host.

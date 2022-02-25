@@ -1,4 +1,4 @@
-namespace SmallsOnline.AVD.ResourceManager.Models.Azure.Generic;
+namespace SmallsOnline.AVD.ResourceManager.Lib.Models.Azure.Generic;
 
 /// <summary>
 /// A collection of data returned by the Azure API.

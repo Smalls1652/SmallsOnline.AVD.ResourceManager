@@ -1,4 +1,6 @@
-namespace SmallsOnline.AVD.ResourceManager.Models.Json;
+using System.Text.Json;
+
+namespace SmallsOnline.AVD.ResourceManager.Lib.Models.Json;
 
 /// <summary>
 /// A custom <see cref="System.Text.Json" /> converter for the <see cref="DateTimeOffset" /> type.

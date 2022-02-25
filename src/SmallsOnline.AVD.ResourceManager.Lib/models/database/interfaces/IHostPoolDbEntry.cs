@@ -1,4 +1,4 @@
-namespace SmallsOnline.AVD.ResourceManager.Models.Database;
+namespace SmallsOnline.AVD.ResourceManager.Lib.Models.Database;
 
 public interface IHostPoolDbEntry
 {

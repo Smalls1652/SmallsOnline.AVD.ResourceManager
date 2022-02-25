@@ -38,5 +38,9 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SmallsOnline.AVD.ResourceManager.Lib\SmallsOnline.AVD.ResourceManager.Lib.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using System.Text.Encodings.Web;
 using Microsoft.Azure.Cosmos;
 
-using SmallsOnline.AVD.ResourceManager.Models.Json;
+using SmallsOnline.AVD.ResourceManager.Lib.Models.Json;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.CosmosDb;
 

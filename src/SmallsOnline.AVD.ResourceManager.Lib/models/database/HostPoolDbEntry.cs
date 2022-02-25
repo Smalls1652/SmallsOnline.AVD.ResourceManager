@@ -1,4 +1,4 @@
-namespace SmallsOnline.AVD.ResourceManager.Models.Database;
+namespace SmallsOnline.AVD.ResourceManager.Lib.Models.Database;
 
 /// <summary>
 /// Data for an Azure Virtual Desktop hostpool.

@@ -1,5 +1,5 @@
-using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
-using SmallsOnline.AVD.ResourceManager.Models.Database;
+using SmallsOnline.AVD.ResourceManager.Lib.Models.Azure.DesktopVirtualization;
+using SmallsOnline.AVD.ResourceManager.Lib.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Functions;
 

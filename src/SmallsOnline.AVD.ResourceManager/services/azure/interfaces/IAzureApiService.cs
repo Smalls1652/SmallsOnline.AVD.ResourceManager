@@ -1,7 +1,7 @@
 using Azure.ResourceManager.Compute;
 
-using SmallsOnline.AVD.ResourceManager.Models.Database;
-using SmallsOnline.AVD.ResourceManager.Models.Azure.DesktopVirtualization;
+using SmallsOnline.AVD.ResourceManager.Lib.Models.Database;
+using SmallsOnline.AVD.ResourceManager.Lib.Models.Azure.DesktopVirtualization;
 
 namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
