@@ -36,8 +36,6 @@ public class Program
             }
         );
 
-        Console.WriteLine("wololo");
-        Console.WriteLine($"Env: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
         app.Run();
     }
 }
