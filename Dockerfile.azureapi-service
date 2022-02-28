@@ -1,0 +1,37 @@
+# Start the build process for the code itself.
+FROM docker.io/rockylinux/rockylinux:latest AS build
+WORKDIR /source
+
+# Install the .NET 6.0 SDK.
+RUN dnf install -y dotnet-sdk-6.0
+
+# Copy over all necessary build resources.
+COPY ./SmallsOnline.AVD.ResourceManager.Services.Azure.sln ./
+COPY src/SmallsOnline.AVD.ResourceManager.Lib ./src/SmallsOnline.AVD.ResourceManager.Lib
+COPY src/SmallsOnline.AVD.ResourceManager.Services.Azure ./src/SmallsOnline.AVD.ResourceManager.Services.Azure
+
+# Build the Azure API service.
+ENV DOTNET_NOLOGO=true
+RUN dotnet restore --runtime linux-x64; \
+    dotnet publish --configuration Release --output /app --runtime linux-x64 --self-contained false --no-restore
+
+# Start building the container image.
+FROM docker.io/rockylinux/rockylinux:latest
+WORKDIR /app
+
+# Update all currently installed packages and then install the ASP.NET Core 6.0 runtime.
+RUN dnf check-update; \
+    dnf upgrade -y; \
+    dnf install -y aspnetcore-runtime-6.0; \
+    dnf autoremove -y; \
+    dnf clean all
+
+# Copy the build output from the previous build operation.
+COPY --from=build /app ./
+
+# Specify the entrypoint to start the Azure API service.
+# Then set environment variables to specify that it's production and that it needs to listen on port 80/TCP.
+ENTRYPOINT [ "./SmallsOnline.AVD.ResourceManager.Services.Azure" ]
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80/tcp
