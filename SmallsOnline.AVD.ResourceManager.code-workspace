@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "SmallsOnline.AVD.ResourceManager",
+			"path": "."
+		},
+		{
+			"name": "SmallsOnline.AVD.ResourceManager",
+			"path": "src/SmallsOnline.AVD.ResourceManager"
+		},
+		{
+			"name": "SmallsOnline.AVD.ResourceManager.Lib",
+			"path": "src/SmallsOnline.AVD.ResourceManager.Lib"
+		}
+	],
+	"settings": {
+		"debug.internalConsoleOptions": "neverOpen"
+	}
+}
