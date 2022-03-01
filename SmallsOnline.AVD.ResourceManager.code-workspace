@@ -22,7 +22,8 @@
 			"**/CVS": true,
 			"**/.DS_Store": true,
 			"**/Thumbs.db": true,
-			"src/": true
+			"src/SmallsOnline.AVD.ResourceManager/": true,
+			"src/SmallsOnline.AVD.ResourceManager.Lib/": true
 		}
 	}
 }
