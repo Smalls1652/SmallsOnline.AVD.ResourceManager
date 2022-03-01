@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "Root",
+			"path": "."
+		},
+		{
+			"name": "SmallsOnline.AVD.ResourceManager",
+			"path": "src/SmallsOnline.AVD.ResourceManager"
+		},
+		{
+			"name": "SmallsOnline.AVD.ResourceManager.Lib",
+			"path": "src/SmallsOnline.AVD.ResourceManager.Lib"
+		}
+	],
+	"settings": {
+		"debug.internalConsoleOptions": "neverOpen",
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"src/SmallsOnline.AVD.ResourceManager/": true,
+			"src/SmallsOnline.AVD.ResourceManager.Lib/": true
+		}
+	}
+}
