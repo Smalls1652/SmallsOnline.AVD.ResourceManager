@@ -15,7 +15,7 @@
 				"/consoleloggerparameters:NoSummary"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+				"cwd": "${workspaceFolder}"
 			},
 			"type": "process",
 			"problemMatcher": "$msCompile"
@@ -29,7 +29,7 @@
 				"/consoleloggerparameters:NoSummary"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+				"cwd": "${workspaceFolder}"
 			},
 			"type": "process",
 			"dependsOn": "clean (functions)",
@@ -50,7 +50,7 @@
 				"/consoleloggerparameters:NoSummary"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+				"cwd": "${workspaceFolder}"
 			},
 			"type": "process",
 			"problemMatcher": "$msCompile"
@@ -66,7 +66,7 @@
 				"/consoleloggerparameters:NoSummary"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager"
+				"cwd": "${workspaceFolder}"
 			},
 			"type": "process",
 			"dependsOn": "clean release (functions)",
@@ -77,7 +77,7 @@
 			"type": "func",
 			"command": "host start",
 			"options": {
-				"cwd": "${workspaceFolder}/src/SmallsOnline.AVD.ResourceManager/bin/Debug/net6.0"
+				"cwd": "${workspaceFolder}/bin/Debug/net6.0"
 			},
 			"isBackground": true,
 			"problemMatcher": "$func-dotnet-watch",
