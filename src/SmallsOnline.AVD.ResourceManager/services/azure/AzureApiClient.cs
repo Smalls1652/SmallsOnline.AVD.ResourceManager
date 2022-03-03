@@ -63,8 +63,6 @@ public class AzureApiClient : IAzureApiClient, IDisposable
     /// <param name="forceRefresh">Force the <see cref="AccessToken" /> to refresh.</param>
     public void RefreshAccessToken(bool forceRefresh = false)
     {
-        _logger.LogInformation("Starting refresh access token check.");
-
         // Set that the token is currently being refreshed.
         _isBeingRefreshed = true;
 
@@ -93,15 +91,9 @@ public class AzureApiClient : IAzureApiClient, IDisposable
 
             _logger.LogInformation("Access token has been refreshed.");
         }
-        else
-        {
-            string expirationDateTimeString = tokenRefreshTime.ToString("yyyy-MM-dd HH:mm:ss zzzz");
-            _logger.LogInformation("The access token does not have to be refreshed yet. Token will refresh on or after {ExpirationDateTimeString}.", expirationDateTimeString);
-        }
 
         // Set that the token is done being refreshed.
         _isBeingRefreshed = false;
-        _logger.LogInformation("Access token refresh check completed.");
     }
 
     /// <summary>
