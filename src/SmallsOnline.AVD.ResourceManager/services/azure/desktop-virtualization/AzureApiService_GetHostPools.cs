@@ -31,7 +31,7 @@ public partial class AzureApiService : IAzureApiService
 
         HttpRequestMessage requestMessage = new(
             method: HttpMethod.Get,
-            requestUri: $"subscriptions/{defaultSubscription.Data.SubscriptionGuid}/providers/Microsoft.DesktopVirtualization/hostPools?api-version=2021-07-12"
+            requestUri: $"subscriptions/{defaultSubscription.Data.SubscriptionId}/providers/Microsoft.DesktopVirtualization/hostPools?api-version=2021-07-12"
         );
 
         logger.LogInformation("Sending API call to '{RequestUri}'", requestMessage.RequestUri);
