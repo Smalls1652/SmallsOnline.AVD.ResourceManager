@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1124.51302",
-      "templateHash": "821168585390970838"
+      "version": "0.4.1272.37030",
+      "templateHash": "10602049354444429943"
     }
   },
   "parameters": {
@@ -40,7 +40,7 @@
     }
   },
   "variables": {
-    "packageUrl": "https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.02.00/SmallsOnline-AVD-ResourceManager_v2022.02.00.zip",
+    "packageUrl": "https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.02.01/SmallsOnline-AVD-ResourceManager_v2022.02.01.zip",
     "uniqueNameString": "[uniqueString(subscription().id, parameters('randomHash'))]",
     "managedIdentityName": "[format('{0}-identity-{1}', parameters('functionAppName'), variables('uniqueNameString'))]",
     "functionAppSvcPlanName": "[format('avd-rscmgr-ASP-{0}', take(variables('uniqueNameString'), 6))]",
