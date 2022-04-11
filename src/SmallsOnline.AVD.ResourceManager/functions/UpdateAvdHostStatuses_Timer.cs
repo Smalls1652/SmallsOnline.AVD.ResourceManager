@@ -1,8 +1,8 @@
+using Azure;
 using Azure.ResourceManager.Compute;
 using Azure.ResourceManager.Compute.Models;
-
-using SmallsOnline.AVD.ResourceManager.Lib.Models.Database;
 using SmallsOnline.AVD.ResourceManager.Lib.Models.Azure.DesktopVirtualization;
+using SmallsOnline.AVD.ResourceManager.Lib.Models.Database;
 
 namespace SmallsOnline.AVD.ResourceManager.Functions;
 
@@ -82,7 +82,7 @@ public class UpdateAvdHostStatuses_Timer
                         // Get details about the virtual machine.
                         // Note: The compiler is still returning a that the 'Properties' property is still possibily null, which it's definitely not.
                         // For the time being, I've added a 'null-forgiving' operator to it.
-                        VirtualMachine virtualMachine = _azureApiService.GetAzVM(sessionHostItem.Properties!.ResourceId);
+                        VirtualMachineResource virtualMachine = _azureApiService.GetAzVM(sessionHostItem.Properties!.ResourceId);
                         VirtualMachineData virtualMachineData = virtualMachine.Get(
                             expand: InstanceViewTypes.InstanceView
                         )
@@ -132,7 +132,7 @@ public class UpdateAvdHostStatuses_Timer
                                     // Set the virtual machine for deallocation.
                                     // It's set to not wait for completion, so that the function doesn't hit the max timeout limit.
                                     virtualMachine.Deallocate(
-                                        waitForCompletion: false
+                                        waitUntil: WaitUntil.Started
                                     );
 
                                     // Reset the "NoSessionCount" to 0, so that the it doesn't cause issues when it's evaluated in the future.

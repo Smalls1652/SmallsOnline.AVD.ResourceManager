@@ -7,7 +7,7 @@ namespace SmallsOnline.AVD.ResourceManager.Services.Azure;
 
 public interface IAzureApiService
 {
-    VirtualMachine GetAzVM(string resourceId);
+    VirtualMachineResource GetAzVM(string resourceId);
     List<SessionHost>? GetSessionHosts(HostPoolDbEntry hostPool);
     List<HostPool>? GetHostPools();
 }

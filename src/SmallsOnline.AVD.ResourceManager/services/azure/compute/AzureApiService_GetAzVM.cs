@@ -9,9 +9,9 @@ public partial class AzureApiService : IAzureApiService
     /// </summary>
     /// <param name="resourceId">The resource ID of the virtual machine.</param>
     /// <returns></returns>
-    public VirtualMachine GetAzVM(string resourceId)
+    public VirtualMachineResource GetAzVM(string resourceId)
     {
-        VirtualMachine vmItem = armClient.GetVirtualMachine(
+        VirtualMachineResource vmItem = armClient.GetVirtualMachineResource(
             id: new(resourceId)
         );
 
