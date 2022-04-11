@@ -1,7 +1,13 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/"
+    directory: "/src/SmallsOnline.AVD.ResourceManager/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependency update"
+  - package-ecosystem: "nuget"
+    directory: "/src/SmallsOnline.AVD.ResourceManager.Lib/"
     schedule:
       interval: "daily"
     labels:
