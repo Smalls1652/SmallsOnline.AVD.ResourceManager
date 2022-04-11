@@ -27,7 +27,7 @@ public partial class AzureApiService : IAzureApiService
     /// <returns>An array of <see cref="HostPool" /> items.</returns>
     private async Task<List<HostPool>?> GetHostPoolsAsync()
     {   
-        Subscription defaultSubscription = await armClient.GetDefaultSubscriptionAsync();
+        SubscriptionResource defaultSubscription = await armClient.GetDefaultSubscriptionAsync();
 
         HttpRequestMessage requestMessage = new(
             method: HttpMethod.Get,
