@@ -3,7 +3,7 @@ Name: Deploy resources for Azure Virtual Desktop Resource Manager
 Author: Tim Small
 Website: https://smalls.online
 GitHub Repo: https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager
-Version: 2022.02.01
+Version: 2022.02.02
 
 Description:
 
@@ -39,7 +39,7 @@ param functionAppName string = 'avd-rscmgr-func'
 @minLength(6)
 param randomHash string = utcNow()
 
-var packageUrl = 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.02.01/SmallsOnline-AVD-ResourceManager_v2022.02.01.zip'
+var packageUrl = 'https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.02.02/SmallsOnline-AVD-ResourceManager_v2022.02.02.zip'
 
 var uniqueNameString = uniqueString(subscription().id, randomHash)
 

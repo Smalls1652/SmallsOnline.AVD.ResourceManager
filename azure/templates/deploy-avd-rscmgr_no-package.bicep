@@ -3,7 +3,7 @@ Name: Deploy resources for Azure Virtual Desktop Resource Manager
 Author: Tim Small
 Website: https://smalls.online
 GitHub Repo: https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager
-Version: 2022.02.01
+Version: 2022.02.02
 
 Description:
 

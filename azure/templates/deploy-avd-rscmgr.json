@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1272.37030",
-      "templateHash": "10602049354444429943"
+      "version": "0.9.1.41621",
+      "templateHash": "927143892384938561"
     }
   },
   "parameters": {
@@ -40,7 +40,7 @@
     }
   },
   "variables": {
-    "packageUrl": "https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.02.01/SmallsOnline-AVD-ResourceManager_v2022.02.01.zip",
+    "packageUrl": "https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager/releases/download/v2022.02.02/SmallsOnline-AVD-ResourceManager_v2022.02.02.zip",
     "uniqueNameString": "[uniqueString(subscription().id, parameters('randomHash'))]",
     "managedIdentityName": "[format('{0}-identity-{1}', parameters('functionAppName'), variables('uniqueNameString'))]",
     "functionAppSvcPlanName": "[format('avd-rscmgr-ASP-{0}', take(variables('uniqueNameString'), 6))]",
@@ -117,8 +117,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]",
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')))]"
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]"
       ]
     },
     {

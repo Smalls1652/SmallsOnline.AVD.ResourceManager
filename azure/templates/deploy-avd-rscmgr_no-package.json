@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1272.37030",
-      "templateHash": "4489348520298352627"
+      "version": "0.9.1.41621",
+      "templateHash": "17392239553798877526"
     }
   },
   "parameters": {
@@ -116,8 +116,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]",
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')))]"
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('{0}-{1}', parameters('databaseName'), variables('uniqueNameString')), 'avd-resource-manager')]"
       ]
     },
     {
