@@ -6,4 +6,5 @@ public interface IHostPool
     string Id { get; set; }
     string Location { get; set; }
     HostPoolProperties Properties { get; set; }
+    Dictionary<string, string>? Tags { get; set; }
 }

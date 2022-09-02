@@ -30,4 +30,10 @@ public class HostPool : IHostPool
     /// </summary>
     [JsonPropertyName("properties")]
     public HostPoolProperties Properties { get; set; } = default!;
+
+    /// <summary>
+    /// Azure resource tags defined for the hostpool.
+    /// </summary>
+    [JsonPropertyName("tags")]
+    public Dictionary<string, string>? Tags { get; set; }
 }
