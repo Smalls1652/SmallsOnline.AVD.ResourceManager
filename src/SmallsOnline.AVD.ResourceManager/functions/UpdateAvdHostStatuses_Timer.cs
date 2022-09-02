@@ -84,7 +84,7 @@ public class UpdateAvdHostStatuses_Timer
                         // For the time being, I've added a 'null-forgiving' operator to it.
                         VirtualMachineResource virtualMachine = _azureApiService.GetAzVM(sessionHostItem.Properties!.ResourceId);
                         VirtualMachineData virtualMachineData = virtualMachine.Get(
-                            expand: InstanceViewTypes.InstanceView
+                            expand: InstanceViewType.InstanceView
                         )
                             .Value
                             .Data;
