@@ -14,7 +14,7 @@
     <Authors>Timothy Small</Authors>
     <Company>Smalls.Online</Company>
     <RepositoryUrl>https://github.com/Smalls1652/SmallsOnline.AVD.ResourceManager</RepositoryUrl>
-    <VersionPrefix>2022.02.00</VersionPrefix>
+    <VersionPrefix>2022.02.02</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
