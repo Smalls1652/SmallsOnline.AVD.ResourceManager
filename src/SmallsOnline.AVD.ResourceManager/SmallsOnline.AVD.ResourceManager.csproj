@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Core" Version="1.33.0" />
-    <PackageReference Include="Azure.Identity" Version="1.9.0" />
+    <PackageReference Include="Azure.Identity" Version="1.10.0" />
     <PackageReference Include="Azure.ResourceManager" Version="1.6.0" />
     <PackageReference Include="Azure.ResourceManager.Compute" Version="1.1.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.1" />
